@@ -37,3 +37,25 @@ export const FaqSchema = z.object({
 export type Faq = z.infer<typeof FaqSchema>;
 
 export const FaqsResponseSchema = z.record(TabTypeSchema, z.array(FaqSchema));
+export type FaqsResponse = z.infer<typeof FaqsResponseSchema>;
+
+export const PageInfoSchema = z.object({
+  limit: z.number(),
+  offset: z.number(),
+  nextOffset: z.number(),
+  prevOffset: z.number(),
+  totalRecord: z.number(),
+});
+export type PageInfo = z.infer<typeof PageInfoSchema>;
+
+export const FaqListResponseSchema = z.object({
+  items: z.array(FaqSchema),
+  pageInfo: PageInfoSchema,
+});
+export type FaqListResponse = z.infer<typeof FaqListResponseSchema>;
+
+export const FaqDataSchema = z.object({
+  faqCategories: FaqCategoriesResponseSchema,
+  faqs: FaqsResponseSchema,
+});
+export type FaqData = z.infer<typeof FaqDataSchema>;

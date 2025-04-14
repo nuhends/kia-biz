@@ -9,9 +9,9 @@ import { FaqCategoriesResponseSchema, FaqCategory, TabType } from './schema';
  */
 export async function getFaqCategories(tab: TabType): Promise<FaqCategory[]> {
   try {
-    // json-server에서는 중첩 리소스에 직접 접근할 수 없으므로
-    // 전체 faqCategories를 가져온 후 해당 탭의 카테고리만 반환
-    const response = await fetch('http://localhost:3001/faqCategories', {
+    const queryParams = new URLSearchParams();
+    queryParams.append('tab', tab);
+    const response = await fetch(`/api/faqCategories?${queryParams.toString()}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

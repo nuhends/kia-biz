@@ -1,6 +1,6 @@
-# json-server FAQ 카테고리 API 문서
+# FAQ 카테고리 API 문서
 
-이 프로젝트는 json-server를 사용하여 FAQ 카테고리 관련 API를 모킹합니다.
+이 프로젝트는 FAQ 카테고리 관련 API를 제공합니다.
 
 ## 파일 구조
 
@@ -11,24 +11,9 @@ src/
     └── faq/                     # FAQ 관련 API
         ├── index.ts             # FAQ API 내보내기
         ├── schema.ts            # 타입과 스키마 정의
-        └── getFaqCategories.ts  # 카테고리 조회 API
+        ├── getFaqCategories.ts  # 카테고리 조회 API
+        └── getFaqs.ts          # FAQ 목록 조회 API
 ```
-
-## 설치 및 실행
-
-1. 종속성 설치(이미 완료되었다면 생략):
-
-```bash
-yarn install
-```
-
-2. API 서버 실행:
-
-```bash
-yarn run mock-api
-```
-
-서버는 기본적으로 `http://localhost:3001`에서 실행됩니다.
 
 ## 사용 가능한 엔드포인트
 
@@ -37,8 +22,23 @@ yarn run mock-api
 #### 전체 카테고리 정보 가져오기 (탭별 카테고리 모두 포함)
 
 ```
-GET /faqCategories
+GET /api/faq/categories
 ```
+
+### FAQ API
+
+#### FAQ 목록 가져오기
+
+```
+GET /api/faq/faqs?tab={tab}&categoryID={categoryID}&limit={limit}&offset={offset}
+```
+
+**쿼리 파라미터:**
+
+- `tab`: FAQ 탭 (CONSULT 또는 USAGE)
+- `categoryID`: 카테고리 ID (선택적)
+- `limit`: 한 페이지당 항목 수 (기본값: 10)
+- `offset`: 시작 위치 (기본값: 0)
 
 ## 응답 형식
 
@@ -70,6 +70,38 @@ GET /faqCategories
 }
 ```
 
+### FAQ 응답 예시
+
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "categoryID": "PRODUCT",
+      "categoryName": "서비스 상품",
+      "subCategoryName": "기본 이용",
+      "question": "서비스 이용 방법은 어떻게 되나요?",
+      "answer": "서비스 이용 방법에 대한 상세 설명..."
+    },
+    {
+      "id": 2,
+      "categoryID": "CONTRACT",
+      "categoryName": "계약",
+      "subCategoryName": "계약 기간",
+      "question": "계약 기간은 어떻게 되나요?",
+      "answer": "계약 기간에 대한 상세 설명..."
+    }
+  ],
+  "pageInfo": {
+    "limit": 10,
+    "offset": 0,
+    "nextOffset": 10,
+    "prevOffset": 0,
+    "totalRecord": 42
+  }
+}
+```
+
 ## 타입 안전성
 
 이 프로젝트는 Zod 라이브러리를 사용하여 런타임 타입 검증을 구현하고 있습니다. 이를 통해 API 응답 데이터의 구조를 검증하고 안전하게 처리합니다.
@@ -91,7 +123,31 @@ export const FaqCategorySchema = z.object({
 });
 export type FaqCategory = z.infer<typeof FaqCategorySchema>;
 
-// 전체 응답 스키마
+// FAQ 항목 스키마
+export const FaqItemSchema = z.object({
+  id: z.string(),
+  question: z.string(),
+  answer: z.string(),
+  categoryID: z.string(),
+  tab: TabTypeSchema,
+});
+export type FaqItem = z.infer<typeof FaqItemSchema>;
+
+// FAQ 응답 스키마
+export const FaqResponseSchema = z.object({
+  items: z.array(FaqItemSchema),
+  pageInfo: z.object({
+    currentPage: z.number(),
+    totalPages: z.number(),
+    totalElements: z.number(),
+    size: z.number(),
+    hasNext: z.boolean(),
+    hasPrevious: z.boolean(),
+  }),
+});
+export type FaqResponse = z.infer<typeof FaqResponseSchema>;
+
+// 전체 카테고리 응답 스키마
 export const FaqCategoriesResponseSchema = z.record(TabTypeSchema, z.array(FaqCategorySchema));
 ```
 
@@ -101,6 +157,10 @@ export const FaqCategoriesResponseSchema = z.record(TabTypeSchema, z.array(FaqCa
 // API 응답 검증 (src/api/faq/getFaqCategories.ts)
 const rawData = await response.json();
 const validatedData = FaqCategoriesResponseSchema.parse(rawData);
+
+// FAQ 응답 검증 (src/api/faq/getFaqs.ts)
+const rawFaqData = await response.json();
+const validatedFaqData = FaqResponseSchema.parse(rawFaqData);
 
 // 입력값 검증 (src/screens/Faq/FaqScreen.tsx)
 try {
@@ -119,11 +179,18 @@ import { faqApi } from '../../api';
 
 // 카테고리 조회
 const consultCategories = await faqApi.getFaqCategories('CONSULT');
+
+// FAQ 목록 조회
+const faqs = await faqApi.getFaqs(
+  'CONSULT',
+  'PRODUCT',
+  10, // limit
+  0, // offset
+);
 ```
 
 ## 추가 정보
 
 자세한 내용은 다음 문서를 참조하세요:
 
-- [json-server 공식 문서](https://github.com/typicode/json-server)
 - [Zod 공식 문서](https://zod.dev/)
