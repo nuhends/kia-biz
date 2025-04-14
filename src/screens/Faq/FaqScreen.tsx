@@ -88,7 +88,7 @@ const FaqScreen = () => {
             }`}
             onClick={() => handleTabChange('CONSULT')}
           >
-            도입 상담
+            서비스 도입
           </button>
           <button
             className={`px-4 py-2 ${
@@ -96,7 +96,7 @@ const FaqScreen = () => {
             }`}
             onClick={() => handleTabChange('USAGE')}
           >
-            이용 방법
+            서비스 이용
           </button>
         </div>
       </div>
@@ -133,8 +133,12 @@ const FaqScreen = () => {
         {filteredFaqs.length > 0 ? (
           filteredFaqs.map((faq) => (
             <div key={faq.id} className="border rounded p-4">
+              <div className="text-gray-600">{`${faq.categoryName} > ${faq.subCategoryName}`}</div>
               <h3 className="font-bold mb-2">{faq.question}</h3>
-              <div className="text-gray-600" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+              <div
+                className="text-gray-600 hidden"
+                dangerouslySetInnerHTML={{ __html: faq.answer }}
+              />
             </div>
           ))
         ) : (
