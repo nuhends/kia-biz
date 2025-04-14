@@ -6,32 +6,38 @@ import { faqApi } from '@/src/api';
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
  * - 카테고리 선택 기능 제공
+ * - 선택된 탭과 카테고리에 따라 FAQ 목록 표시
  */
 const FaqScreen = () => {
   // 상태 관리
   const [activeTab, setActiveTab] = useState<faqApi.TabType>('CONSULT');
   const [categories, setCategories] = useState<faqApi.FaqCategory[]>([]);
   const [selectedCategoryID, setSelectedCategoryID] = useState<string | null>(null);
+  const [faqs, setFaqs] = useState<faqApi.Faq[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 탭이 변경될 때 카테고리 목록 가져오기
+  // 탭이 변경될 때 카테고리 목록과 FAQ 목록 가져오기
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await faqApi.getFaqCategories(activeTab);
-        setCategories(result);
+        const [categoriesResult, faqsResult] = await Promise.all([
+          faqApi.getFaqCategories(activeTab),
+          faqApi.getFaqs(activeTab),
+        ]);
+        setCategories(categoriesResult);
+        setFaqs(faqsResult);
         setSelectedCategoryID(null); // 탭 변경 시 선택된 카테고리 초기화
       } catch (err) {
-        setError('카테고리 데이터를 불러오는데 실패했습니다.');
+        setError('데이터를 불러오는데 실패했습니다.');
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCategories();
+    fetchData();
   }, [activeTab]);
 
   // 이벤트 핸들러
@@ -50,6 +56,15 @@ const FaqScreen = () => {
   const handleCategorySelect = (categoryID: string | null) => {
     setSelectedCategoryID(categoryID);
   };
+
+  // 선택된 카테고리에 따라 FAQ 필터링
+  const filteredFaqs = selectedCategoryID
+    ? faqs.filter(
+        (faq) =>
+          faq.categoryID ===
+          categories.find((c) => c.categoryID === selectedCategoryID)?.categoryID,
+      )
+    : faqs;
 
   // 로딩 및 에러 처리
   if (loading && !categories.length) {
@@ -113,17 +128,20 @@ const FaqScreen = () => {
         </div>
       </div>
 
-      {/* 메시지 영역 */}
-      <div className="p-8 text-center border rounded">
-        <p>여기에 FAQ 콘텐츠가 표시됩니다.</p>
-        <p className="mt-2 text-gray-500">
-          {selectedCategoryID
-            ? `선택된 카테고리: ${
-                categories.find((c) => c.categoryID === selectedCategoryID)?.name ||
-                selectedCategoryID
-              }`
-            : '모든 카테고리 표시'}
-        </p>
+      {/* FAQ 목록 */}
+      <div className="space-y-4">
+        {filteredFaqs.length > 0 ? (
+          filteredFaqs.map((faq) => (
+            <div key={faq.id} className="border rounded p-4">
+              <h3 className="font-bold mb-2">{faq.question}</h3>
+              <div className="text-gray-600" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+            </div>
+          ))
+        ) : (
+          <div className="text-center p-8 border rounded">
+            <p>해당 카테고리의 FAQ가 없습니다.</p>
+          </div>
+        )}
       </div>
     </div>
   );
