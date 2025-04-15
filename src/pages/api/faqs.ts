@@ -15,7 +15,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const { tab, categoryID, limit, offset } = req.query;
+    const { tab, categoryID, limit, offset, question } = req.query;
 
     // tab 파라미터 검증
     if (!tab || typeof tab !== 'string') {
@@ -38,6 +38,20 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).json({ error: 'invalid categoryID value' });
       }
       filteredData = filteredData.filter((faq: Faq) => faq.categoryID === validatedCategoryID.data);
+    }
+
+    // question 검색어가 있는 경우 추가 필터링
+    if (question && typeof question === 'string') {
+      const searchTerm = question.toLowerCase();
+      filteredData = filteredData.filter((faq: Faq) => {
+        const { question: faqQuestion, answer, categoryName, subCategoryName } = faq;
+        return (
+          faqQuestion.toLowerCase().includes(searchTerm) ||
+          (answer && answer.toLowerCase().includes(searchTerm)) ||
+          (categoryName && categoryName.toLowerCase().includes(searchTerm)) ||
+          (subCategoryName && subCategoryName.toLowerCase().includes(searchTerm))
+        );
+      });
     }
 
     // 페이지네이션 처리

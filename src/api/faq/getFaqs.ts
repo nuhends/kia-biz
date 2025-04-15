@@ -6,6 +6,7 @@ import { FaqCategoryID, FaqListResponse, FaqListResponseSchema, TabType } from '
  * 탭별 FAQ 목록 조회
  * @param tab 탭 유형 (CONSULT 또는 USAGE)
  * @param categoryID 카테고리 ID (선택적)
+ * @param question 검색어 (선택적)
  * @param limit 한 페이지당 항목 수 (기본값: 10)
  * @param offset 시작 위치 (기본값: 0)
  * @returns FAQ 목록
@@ -13,6 +14,7 @@ import { FaqCategoryID, FaqListResponse, FaqListResponseSchema, TabType } from '
 export async function getFaqs(
   tab: TabType,
   categoryID?: FaqCategoryID,
+  question?: string,
   limit: number = 10,
   offset: number = 0,
 ): Promise<FaqListResponse> {
@@ -22,6 +24,9 @@ export async function getFaqs(
     queryParams.append('tab', tab);
     if (categoryID) {
       queryParams.append('categoryID', categoryID);
+    }
+    if (question) {
+      queryParams.append('question', question);
     }
     queryParams.append('limit', limit.toString());
     queryParams.append('offset', offset.toString());

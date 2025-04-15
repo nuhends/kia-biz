@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { faqApi } from '@/src/api';
 
@@ -9,6 +9,7 @@ import { ITEMS_PER_PAGE } from './constants';
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
  * - 카테고리 선택 기능 제공
  * - 선택된 탭과 카테고리에 따라 FAQ 목록 표시
+ * - 검색 기능 제공
  */
 const FaqScreen = () => {
   // 상태 관리
@@ -20,6 +21,9 @@ const FaqScreen = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalRecord, setTotalRecord] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const prevSearchQuery = useRef('');
 
   // 탭이 변경될 때 카테고리 목록과 FAQ 목록 가져오기
   useEffect(() => {
@@ -31,6 +35,7 @@ const FaqScreen = () => {
           faqApi.getFaqs(
             activeTab,
             selectedCategoryID || undefined,
+            isSearching ? searchQuery : undefined,
             ITEMS_PER_PAGE,
             currentPage * ITEMS_PER_PAGE,
           ),
@@ -47,7 +52,7 @@ const FaqScreen = () => {
     };
 
     fetchData();
-  }, [activeTab, selectedCategoryID, currentPage]);
+  }, [activeTab, selectedCategoryID, currentPage, isSearching, searchQuery]);
 
   // 이벤트 핸들러
   const handleTabChange = (tab: faqApi.TabType) => {
@@ -57,6 +62,8 @@ const FaqScreen = () => {
       setActiveTab(validatedTab);
       setSelectedCategoryID(null); // 탭 변경 시 선택된 카테고리 초기화
       setCurrentPage(0); // 페이지 초기화
+      setIsSearching(false); // 검색 초기화
+      setSearchQuery(''); // 검색어 초기화
     } catch (err) {
       console.error('잘못된 탭 타입:', err);
       // 오류 발생 시 기본 탭으로 설정
@@ -67,10 +74,40 @@ const FaqScreen = () => {
   const handleCategorySelect = (categoryID: faqApi.FaqCategoryID | null) => {
     setSelectedCategoryID(categoryID);
     setCurrentPage(0); // 카테고리 변경 시 페이지 초기화
+    // 서브탭 변경 시에는 검색 상태와 검색어를 유지
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim().length < 2) {
+      alert('검색어는 2글자 이상 입력해주세요.');
+      return;
+    }
+
+    // 검색어가 변경되었거나 검색 상태가 false인 경우에만 검색 실행
+    if (!isSearching || searchQuery !== prevSearchQuery.current) {
+      setIsSearching(true);
+      setCurrentPage(0); // 검색 시 페이지 초기화
+      prevSearchQuery.current = searchQuery; // 현재 검색어 저장
+    }
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const handleResetSearch = () => {
+    setSearchQuery('');
+    setIsSearching(false);
   };
 
   // 로딩 및 에러 처리
@@ -108,6 +145,38 @@ const FaqScreen = () => {
             서비스 이용
           </button>
         </div>
+      </div>
+
+      {/* 검색 UI */}
+      <div className="mb-6">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요"
+              className="w-full px-4 py-2 border rounded"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              onKeyDown={handleSearchKeyDown}
+            />
+            {searchQuery && (
+              <button
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                onClick={handleResetSearch}
+                type="button"
+                aria-label="검색어 초기화"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={handleSearch}>
+            검색
+          </button>
+        </div>
+        {isSearching && (
+          <div className="mt-2 text-sm text-gray-600">검색 결과 총 {totalRecord}건</div>
+        )}
       </div>
 
       {/* 카테고리 필터 */}
