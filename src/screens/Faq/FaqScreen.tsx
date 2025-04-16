@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 
 import { faqApi } from '@/src/api';
 
@@ -11,7 +11,7 @@ import { ITEMS_PER_PAGE } from './constants';
  * - 선택된 탭과 카테고리에 따라 FAQ 목록 표시
  * - 검색 기능 제공
  */
-const FaqScreen = () => {
+const FaqScreen: FC = () => {
   // 상태 관리
   const [activeTab, setActiveTab] = useState<faqApi.TabType>('CONSULT');
   const [categories, setCategories] = useState<faqApi.FaqCategory[]>([]);
