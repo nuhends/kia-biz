@@ -9,6 +9,7 @@ import TermsModal from '@/src/screens/Faq/TermsModal';
 import Address from './Address';
 
 import type { Term } from '@/src/api/terms';
+import { useBodyScrollLock } from '@/src/hooks/useBodyScrollLock';
 
 interface Props {
   terms: Term[];
@@ -16,13 +17,16 @@ interface Props {
 
 const Footer: FC<Props> = ({ terms }) => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const { lock, unlock } = useBodyScrollLock();
 
   const handleOpenTerms = () => {
     setIsTermsOpen(true);
+    lock();
   };
 
   const handleCloseTerms = () => {
     setIsTermsOpen(false);
+    unlock();
   };
 
   return (
