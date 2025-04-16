@@ -14,6 +14,7 @@ const eslintConfig = [
   {
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
+      'react/no-danger-with-children': 'off',
     },
   },
 ];
