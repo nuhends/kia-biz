@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 
-import Footer from '@/src/components/Footer';
+import Footer from '@/src/components/Footer/Footer';
 import Header from '@/src/components/Header';
 import Layout from '@/src/components/Layout/Layout';
 import { NextPageWithLayout } from '@/src/components/Layout/types';

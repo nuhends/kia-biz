@@ -13,3 +13,36 @@ export const META = {
     TITLE: '서비스 도입 FAQ | 기아 비즈(Kia Biz) - 친환경 모빌리티 서비스',
   },
 };
+
+export const URLS = {
+  FULL_POLICY: 'https://privacy.kia.com/overview/full-policy',
+};
+
+export const ADDRESS_INFO = [
+  {
+    title: '주소',
+    description: '서울특별시 서초구 헌릉로 12<em class="ml-[12px]">기아㈜</em>',
+    hideTitle: true,
+  },
+  {
+    title: '대표',
+    description: '송호성, 최준영',
+  },
+  {
+    title: '사업자등록번호',
+    description: '119-81-02316',
+  },
+  {
+    title: '통신판매번호',
+    description: '2006-07935',
+  },
+  {
+    title: '고객센터',
+    description: '1833-4964',
+  },
+  {
+    title: '제휴문의',
+    description:
+      '<a class="text-inherit underline" href="mailto:kiabiz@kia.com">kiabiz@kia.com</a>',
+  },
+];
