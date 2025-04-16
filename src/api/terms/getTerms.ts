@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { getApiUrl } from '@/src/utils/api';
+
 import { Term, TermSchema, TermsClassID, TermsClassIDSchema } from './schema';
 
 /**
@@ -17,7 +19,11 @@ export async function getTerms(termsClassID: TermsClassID): Promise<Term[]> {
 
     const queryParams = new URLSearchParams();
     queryParams.append('termsClassID', validatedTermsClassID.data);
-    const response = await fetch(`/api/terms?${queryParams.toString()}`, {
+
+    // 유틸리티 함수를 사용하여 API URL 생성
+    const apiUrl = getApiUrl('/api/terms', queryParams);
+
+    const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
