@@ -3,17 +3,19 @@ import Link from 'next/link';
 import { FC, useState } from 'react';
 
 import KiaLogo from '@/public/svgs/logo_kia.svg';
-import { getTerms, Term } from '@/src/api/terms';
 import { ADDRESS_INFO, URLS } from '@/src/constants/meta';
 import TermsModal from '@/src/screens/Faq/TermsModal';
 
 import Address from './Address';
 
-const Footer: FC = () => {
+import type { Term } from '@/src/api/terms';
+
+interface Props {
+  terms: Term[];
+}
+
+const Footer: FC<Props> = ({ terms }) => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
-  const [termsData, setTermsData] = useState<Term[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleOpenTerms = () => {
     setIsTermsOpen(true);
@@ -21,22 +23,6 @@ const Footer: FC = () => {
 
   const handleCloseTerms = () => {
     setIsTermsOpen(false);
-  };
-
-  const fetchTermsData = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const data = await getTerms('JOIN_SERVICE_USE');
-      setTermsData(data);
-      console.log('약관 데이터:', data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
-      console.error('약관 데이터 가져오기 오류:', err);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
@@ -67,15 +53,6 @@ const Footer: FC = () => {
               >
                 이용약관
               </button>
-              <button
-                className="text-white text-(length:--font-lg) hover:underline font-bold leading-[48px] lg:leading-(--line-height) ml-[16px] lg:ml-[24px]"
-                type="button"
-                role="listitem"
-                onClick={fetchTermsData}
-                disabled={isLoading}
-              >
-                {isLoading ? '로딩 중...' : '약관 데이터 가져오기'}
-              </button>
             </div>
             <Address addressInfo={ADDRESS_INFO} />
           </div>
@@ -90,9 +67,8 @@ const Footer: FC = () => {
           </div>
         </div>
       </footer>
-      {termsData && (
-        <TermsModal isOpen={isTermsOpen} onClose={handleCloseTerms} terms={termsData} />
-      )}
+      {/* TODO: terms 데이터 실패했을 경우 처리 필요 */}
+      {terms && <TermsModal isOpen={isTermsOpen} onClose={handleCloseTerms} terms={terms} />}
     </>
   );
 };
