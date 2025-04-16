@@ -469,3 +469,12 @@
     }
   }
 }
+
+@keyframes dialog-backdrop-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
