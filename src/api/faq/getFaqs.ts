@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { getApiUrl } from '@/src/utils/api';
+
 import { FaqCategoryID, FaqListResponse, FaqListResponseSchema, TabType } from './schema';
 
 /**
@@ -31,7 +33,10 @@ export async function getFaqs(
     queryParams.append('limit', limit.toString());
     queryParams.append('offset', offset.toString());
 
-    const response = await fetch(`/api/faqs?${queryParams.toString()}`, {
+    // 유틸리티 함수를 사용하여 API URL 생성
+    const apiUrl = getApiUrl('/api/faqs', queryParams);
+
+    const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

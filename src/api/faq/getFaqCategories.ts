@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { FaqCategoriesResponseSchema, FaqCategory, TabType } from './schema';
+import { getApiUrl } from '@/src/utils/api';
 
 /**
  * 탭별 카테고리 목록 조회
@@ -11,7 +12,11 @@ export async function getFaqCategories(tab: TabType): Promise<FaqCategory[]> {
   try {
     const queryParams = new URLSearchParams();
     queryParams.append('tab', tab);
-    const response = await fetch(`/api/faqCategories?${queryParams.toString()}`, {
+
+    // 유틸리티 함수를 사용하여 API URL 생성
+    const apiUrl = getApiUrl('/api/faqCategories', queryParams);
+
+    const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
