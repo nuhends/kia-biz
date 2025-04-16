@@ -16,6 +16,7 @@ const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children })
 
   return createPortal(
     // TODO: z-index 상수 관리
+    // TODO: 애니메이션 처리 추가
     <div
       className={classNames(
         'min-w-[320px] max-w-[calc(100%-var(--side-padding)*2)] max-h-[calc(100%-var(--side-padding)*2)]',
