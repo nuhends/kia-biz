@@ -2,10 +2,20 @@ import '@/src/styles/globals.css';
 
 import Head from 'next/head';
 
+import Layout from '@/src/components/Layout/Layout';
+import { NextPageWithLayout } from '@/src/components/Layout/types';
 import { META } from '@/src/constants/meta';
 
 import type { AppProps } from 'next/app';
-export default function App({ Component, pageProps }: AppProps) {
+type AppPropsWithLayout<T> = AppProps & {
+  Component: NextPageWithLayout<T>;
+};
+
+interface Props {}
+
+const App = ({ Component, pageProps }: AppPropsWithLayout<Props>) => {
+  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
+
   return (
     <>
       <Head>
@@ -24,7 +34,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
     </>
   );
-}
+};
+
+export default App;

@@ -122,7 +122,7 @@ const FaqScreen = () => {
   const totalPages = Math.ceil(totalRecord / ITEMS_PER_PAGE);
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
       <h1 className="text-2xl font-bold mb-6">자주 묻는 질문 (FAQ)</h1>
 
       {/* 탭 선택 */}
