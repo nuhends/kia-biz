@@ -27,7 +27,7 @@ const Footer = () => {
               개인정보 처리방침
             </Link>
             <button
-              className="text-white text-(length:--font-lg) font-bold leading-[48px] lg:leading-(--line-height)"
+              className="text-white text-(length:--font-lg) hover:underline font-bold leading-[48px] lg:leading-(--line-height)"
               type="button"
               role="listitem"
             >
