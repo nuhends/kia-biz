@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 
 import IconClear from '@/public/svgs/ic_clear.svg';
+import IconInit from '@/public/svgs/ic_init.svg';
 import IconSearch from '@/public/svgs/ic_search.svg';
 import { faqApi } from '@/src/api';
 import ContentTitle from '@/src/components/Layout/ContentTitle';
@@ -134,12 +135,10 @@ const FaqScreen: FC = () => {
   }
 
   return (
-    <div>
+    <>
       <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
-
       {/* 카테고리 탭 */}
       <CategoryNavTab />
-
       {/* 검색 UI */}
       <div className="mt-(--px-lg) md:bg-gray-10 md:p-(--px-md)">
         <div className="flex w-(--search-bar-width)">
@@ -160,7 +159,10 @@ const FaqScreen: FC = () => {
                 type="button"
                 onClick={handleResetSearch}
               >
-                <span aria-hidden="true" className="w-[24px] h-[24px]">
+                <span
+                  aria-hidden="true"
+                  className="w-[24px] h-[24px] [&>svg]:w-full [&>svg]:h-full"
+                >
                   <IconClear />
                 </span>
                 <span className="blind">검색어 초기화</span>
@@ -171,17 +173,37 @@ const FaqScreen: FC = () => {
               type="button"
               onClick={handleSearch}
             >
-              <span aria-hidden="true" className="w-[24px] h-[24px]">
+              <span aria-hidden="true" className="w-[24px] h-[24px] [&>svg]:w-full [&>svg]:h-full">
                 <IconSearch />
               </span>
               <span className="blind">검색</span>
             </button>
           </div>
         </div>
-        {isSearching && (
-          <div className="mt-2 text-sm text-gray-600">검색 결과 총 {totalRecord}건</div>
-        )}
       </div>
+      {/* 검색결과 정보 */}
+      {!isSearching && (
+        <div className="flex justify-between my-(--px-md)">
+          <h3 className="leading-sm text-(length:--heading-info) font-bold">
+            검색 결과 총 <em>{totalRecord}</em>건
+          </h3>
+          <button
+            className={classNames(
+              'flex items-center text-[14px] px-[2px]',
+              'md:text-[16px] px-[4px]',
+            )}
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+              className="w-(--ic-sm) h-(--ic-sm) mr-[2px] [&>svg]:w-full [&>svg]:h-full"
+            >
+              <IconInit />
+            </span>
+            검색초기화
+          </button>
+        </div>
+      )}
       {/* 카테고리 필터 */}
       <FilterList categories={categories} className="mt-(--px-md)" />
       {/* FAQ 목록 */}
@@ -192,7 +214,7 @@ const FaqScreen: FC = () => {
       <ProcessInfoSection title="이용 프로세스 안내" processInfo={PROCESS_INFO} />
       {/* app 링크 제공  */}
       <AppInfoSection className="mt-[48px] xl:mt-[64px]" />
-    </div>
+    </>
   );
 };
 

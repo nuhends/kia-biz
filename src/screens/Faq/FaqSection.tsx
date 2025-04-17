@@ -1,6 +1,8 @@
 import type { FaqListResponse, TabType } from '@/src/api/faq/schema';
 import classNames from 'classnames';
 
+import IconNoData from '@/public/svgs/ic_nodata.svg';
+
 import { ITEMS_PER_PAGE } from './constants';
 import FaqItem from './FaqItem';
 
@@ -25,8 +27,16 @@ const FaqSection = ({ faqsData, tabType, className }: Props) => {
           ))}
         </ul>
       ) : (
-        <div className="text-center p-8 border rounded">
-          <p>해당 카테고리의 FAQ가 없습니다.</p>
+        <div className="py-(--space-box2) border-t-2 border-b-[1px] border-midnight-900 text-center">
+          <span
+            aria-hidden="true"
+            className="block w-(--ic-xlg2) h-(--ic-xlg2) mx-auto [&>svg]:w-full [&>svg]:h-full"
+          >
+            <IconNoData />
+          </span>
+          <p className="mt-(--space-xsm) leading-md break-keep text-gray-500">
+            검색결과가 없습니다.
+          </p>
         </div>
       )}
       {totalPages > 1 && (
