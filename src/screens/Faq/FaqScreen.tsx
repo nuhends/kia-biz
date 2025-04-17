@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
-import LogoAppStore from '@/public/svgs/logo_appstore.svg';
-import LogoGooglePlay from '@/public/svgs/logo_googleplay.svg';
 import { faqApi } from '@/src/api';
 import ContentTitle from '@/src/components/Layout/ContentTitle';
+import ProcessInfoSection from '@/src/components/ProcessSection/ProcessInfoSection';
 import { PROCESS_INFO } from '@/src/constants/contents';
-import { URLS } from '@/src/constants/meta';
 
+import AppInfoSection from './AppInfoSection';
 import { ITEMS_PER_PAGE } from './constants';
 import InquiryInfoSection from './InquiryInfoSection';
-import ProcessInfoSection from '../../components/ProcessSection/ProcessInfoSection';
 
 import type { FC } from 'react';
 /**
@@ -258,21 +256,7 @@ const FaqScreen: FC = () => {
       <ProcessInfoSection title="이용 프로세스 안내" processInfo={PROCESS_INFO} />
 
       {/* app 링크 제공  */}
-      <section>
-        <h3>
-          <em>기아 비즈 App</em> 지금 만나보세요!
-        </h3>
-        <div role="list">
-          <a href={URLS.GOOGLE_PLAY} target="_blank" rel="noopener noreferrer">
-            <LogoGooglePlay />
-            <span>Google Play</span>
-          </a>
-          <a href={URLS.APP_STORE} target="_blank" rel="noopener noreferrer">
-            <LogoAppStore />
-            <span>App Store</span>
-          </a>
-        </div>
-      </section>
+      <AppInfoSection className="mt-[48px] xl:mt-[64px]" />
     </div>
   );
 };

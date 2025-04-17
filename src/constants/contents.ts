@@ -4,6 +4,9 @@ import IconProcess01 from '@/public/svgs/ic_process01.svg';
 import IconProcess02 from '@/public/svgs/ic_process02.svg';
 import IconProcess03 from '@/public/svgs/ic_process03.svg';
 import IconProcess04 from '@/public/svgs/ic_process04.svg';
+import LogoAppStore from '@/public/svgs/logo_appstore.svg';
+import LogoGooglePlay from '@/public/svgs/logo_googleplay.svg';
+import { URLS } from '@/src/constants/meta';
 
 import type { ComponentType, ReactElement } from 'react';
 import type { ProcessInfo } from '@/src/components/ProcessSection/ProcessInfoItem';
@@ -36,5 +39,19 @@ export const PROCESS_INFO: ProcessInfo[] = [
     label: '서비스 이용',
     description: '이용자 App에서 차량 예약을 하고 K존에서 바로 이용하세요!',
     icon: createIconComponent(IconProcess04),
+  },
+];
+
+/** 앱 정보 데이터 */
+export const APP_INFO = [
+  {
+    logo: createIconComponent(LogoAppStore),
+    title: 'App Store',
+    href: URLS.APP_STORE,
+  },
+  {
+    logo: createIconComponent(LogoGooglePlay),
+    title: 'Google Play',
+    href: URLS.GOOGLE_PLAY,
   },
 ];
