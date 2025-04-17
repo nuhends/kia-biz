@@ -16,6 +16,11 @@ export const META = {
 
 export const URLS = {
   FULL_POLICY: 'https://privacy.kia.com/overview/full-policy',
+  GOOGLE_PLAY: 'https://play.google.com/store/apps/details?id=kor.mop.user.app',
+  APP_STORE: 'https://apps.apple.com/kr/app/%EC%9C%84%EB%B8%94-%EB%B9%84%EC%A6%88/id15980657',
+  SERVICE_PROPOSAL: '/downloads/service-proposal.pdf',
+  KAKAO_CHANNEL: 'https://pf.kakao.com/_xfLxjdb',
+  COUNSEL: 'https://wiblebiz.kia.com/Counsel',
 };
 
 export const ADDRESS_INFO = [

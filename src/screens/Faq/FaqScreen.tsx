@@ -1,9 +1,15 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { faqApi } from '@/src/api';
+import ContentTitle from '@/src/components/Layout/ContentTitle';
+import ProcessInfoSection from '@/src/components/ProcessSection/ProcessInfoSection';
+import { PROCESS_INFO } from '@/src/constants/contents';
 
+import AppInfoSection from './AppInfoSection';
 import { ITEMS_PER_PAGE } from './constants';
+import InquiryInfoSection from './InquiryInfoSection';
 
+import type { FC } from 'react';
 /**
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
@@ -123,9 +129,8 @@ const FaqScreen: FC = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">자주 묻는 질문 (FAQ)</h1>
+      <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
 
-      {/* 탭 선택 */}
       <div className="mb-6">
         <div className="flex gap-4 border-b">
           <button
@@ -243,6 +248,15 @@ const FaqScreen: FC = () => {
           </div>
         )}
       </div>
+
+      {/* 서비스 문의 */}
+      <InquiryInfoSection />
+
+      {/* 이용 프로세스 안내 */}
+      <ProcessInfoSection title="이용 프로세스 안내" processInfo={PROCESS_INFO} />
+
+      {/* app 링크 제공  */}
+      <AppInfoSection className="mt-[48px] xl:mt-[64px]" />
     </div>
   );
 };
