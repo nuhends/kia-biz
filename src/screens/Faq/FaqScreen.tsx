@@ -1,12 +1,19 @@
+import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 
+import IconClear from '@/public/svgs/ic_clear.svg';
+import IconInit from '@/public/svgs/ic_init.svg';
+import IconSearch from '@/public/svgs/ic_search.svg';
 import { faqApi } from '@/src/api';
 import ContentTitle from '@/src/components/Layout/ContentTitle';
 import ProcessInfoSection from '@/src/components/ProcessSection/ProcessInfoSection';
 import { PROCESS_INFO } from '@/src/constants/contents';
 
 import AppInfoSection from './AppInfoSection';
+import CategoryNavTab from './CategoryNavTab';
 import { ITEMS_PER_PAGE } from './constants';
+import FaqSection from './FaqSection';
+import FilterList from './FilterList';
 import InquiryInfoSection from './InquiryInfoSection';
 
 import type { FC } from 'react';
@@ -23,6 +30,7 @@ const FaqScreen: FC = () => {
   const [categories, setCategories] = useState<faqApi.FaqCategory[]>([]);
   const [selectedCategoryID, setSelectedCategoryID] = useState<faqApi.FaqCategoryID | null>(null);
   const [faqs, setFaqs] = useState<faqApi.Faq[]>([]);
+  const [faqsData, setFaqsData] = useState<faqApi.FaqListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -46,6 +54,7 @@ const FaqScreen: FC = () => {
             currentPage * ITEMS_PER_PAGE,
           ),
         ]);
+        setFaqsData(faqsResult);
         setCategories(categoriesResult);
         setFaqs(faqsResult.items);
         setTotalRecord(faqsResult.pageInfo.totalRecord);
@@ -58,7 +67,7 @@ const FaqScreen: FC = () => {
     };
 
     fetchData();
-  }, [activeTab, selectedCategoryID, currentPage, isSearching, searchQuery]);
+  }, [activeTab, selectedCategoryID, currentPage, isSearching]);
 
   // 이벤트 핸들러
   const handleTabChange = (tab: faqApi.TabType) => {
@@ -125,139 +134,87 @@ const FaqScreen: FC = () => {
     return <div className="text-center p-8 text-red-500">{error}</div>;
   }
 
-  const totalPages = Math.ceil(totalRecord / ITEMS_PER_PAGE);
-
   return (
-    <div>
+    <>
       <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
-
-      <div className="mb-6">
-        <div className="flex gap-4 border-b">
-          <button
-            className={`px-4 py-2 ${
-              activeTab === 'CONSULT' ? 'border-b-2 border-blue-500 font-bold' : ''
-            }`}
-            onClick={() => handleTabChange('CONSULT')}
-          >
-            서비스 도입
-          </button>
-          <button
-            className={`px-4 py-2 ${
-              activeTab === 'USAGE' ? 'border-b-2 border-blue-500 font-bold' : ''
-            }`}
-            onClick={() => handleTabChange('USAGE')}
-          >
-            서비스 이용
-          </button>
-        </div>
-      </div>
-
+      {/* 카테고리 탭 */}
+      <CategoryNavTab />
       {/* 검색 UI */}
-      <div className="mb-6">
-        <div className="flex gap-2">
+      <div className="mt-(--px-lg) md:bg-gray-10 md:p-(--px-md)">
+        <div className="flex w-(--search-bar-width)">
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="검색어를 입력하세요"
-              className="w-full px-4 py-2 border rounded"
+              placeholder="찾으시는 내용을 입력해 주세요"
+              className={classNames(
+                'w-full h-(--btn-xlg2) pl-[16px] pr-[calc(var(--ic-sm)+var(--clear-space)+var(--btn-xlg2)-2px)] text-[1rem] border-midnight-900 bg-white',
+              )}
               value={searchQuery}
               onChange={handleSearchInputChange}
               onKeyDown={handleSearchKeyDown}
             />
             {searchQuery && (
               <button
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                onClick={handleResetSearch}
+                className="flex items-center justify-center absolute top-[1px] right-[calc(var(--btn-xlg2)-1px)] h-[calc(100%-2px)]"
                 type="button"
-                aria-label="검색어 초기화"
+                onClick={handleResetSearch}
               >
-                ✕
+                <span
+                  aria-hidden="true"
+                  className="w-[24px] h-[24px] [&>svg]:w-full [&>svg]:h-full"
+                >
+                  <IconClear />
+                </span>
+                <span className="blind">검색어 초기화</span>
               </button>
             )}
-          </div>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={handleSearch}>
-            검색
-          </button>
-        </div>
-        {isSearching && (
-          <div className="mt-2 text-sm text-gray-600">검색 결과 총 {totalRecord}건</div>
-        )}
-      </div>
-
-      {/* 카테고리 필터 */}
-      <div className="mb-6">
-        <div className="flex flex-wrap gap-2">
-          <button
-            className={`px-4 py-2 rounded ${
-              selectedCategoryID === null ? 'bg-blue-500 text-white' : 'bg-gray-200'
-            }`}
-            onClick={() => handleCategorySelect(null)}
-          >
-            전체
-          </button>
-          {categories.map((category) => (
             <button
-              key={category.categoryID}
-              className={`px-4 py-2 rounded ${
-                selectedCategoryID === category.categoryID
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200'
-              }`}
-              onClick={() => handleCategorySelect(category.categoryID as faqApi.FaqCategoryID)}
+              className="flex items-center justify-center absolute top-[1px] right-[1px] w-[calc(var(--btn-xlg2)-2px)] h-[calc(100%-2px)] text-white"
+              type="button"
+              onClick={handleSearch}
             >
-              {category.name}
+              <span aria-hidden="true" className="w-[24px] h-[24px] [&>svg]:w-full [&>svg]:h-full">
+                <IconSearch />
+              </span>
+              <span className="blind">검색</span>
             </button>
-          ))}
+          </div>
         </div>
       </div>
-
-      {/* FAQ 목록 */}
-      <div className="space-y-4">
-        {faqs.length > 0 ? (
-          <>
-            {faqs.map((faq) => (
-              <div key={faq.id} className="border rounded p-4">
-                <div className="text-gray-600">{`${faq.categoryName} > ${faq.subCategoryName}`}</div>
-                <h3 className="font-bold mb-2">{faq.question}</h3>
-                <div
-                  className="text-gray-600 hidden"
-                  dangerouslySetInnerHTML={{ __html: faq.answer }}
-                />
-              </div>
-            ))}
-            {/* 페이지네이션 */}
-            {totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-6">
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handlePageChange(i)}
-                    className={`px-4 py-2 rounded ${
-                      currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-              </div>
+      {/* 검색결과 정보 */}
+      {!isSearching && (
+        <div className="flex justify-between my-(--px-md)">
+          <h3 className="leading-sm text-(length:--heading-info) font-bold">
+            검색 결과 총 <em>{totalRecord}</em>건
+          </h3>
+          <button
+            className={classNames(
+              'flex items-center text-[14px] px-[2px]',
+              'md:text-[16px] px-[4px]',
             )}
-          </>
-        ) : (
-          <div className="text-center p-8 border rounded">
-            <p>해당 카테고리의 FAQ가 없습니다.</p>
-          </div>
-        )}
-      </div>
-
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+              className="w-(--ic-sm) h-(--ic-sm) mr-[2px] [&>svg]:w-full [&>svg]:h-full"
+            >
+              <IconInit />
+            </span>
+            검색초기화
+          </button>
+        </div>
+      )}
+      {/* 카테고리 필터 */}
+      <FilterList categories={categories} className="mt-(--px-md)" />
+      {/* FAQ 목록 */}
+      <FaqSection faqsData={faqsData} tabType={activeTab} />
       {/* 서비스 문의 */}
       <InquiryInfoSection />
-
       {/* 이용 프로세스 안내 */}
       <ProcessInfoSection title="이용 프로세스 안내" processInfo={PROCESS_INFO} />
-
       {/* app 링크 제공  */}
       <AppInfoSection className="mt-[48px] xl:mt-[64px]" />
-    </div>
+    </>
   );
 };
 
