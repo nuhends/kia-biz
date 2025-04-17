@@ -385,66 +385,7 @@
     margin: var(--heading-2-margin);
     font-size: var(--heading-2);
     line-height: var(--leading-sm);
-  }
-  .btn-xlg {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 8em;
-    height: var(--btn-xlg);
-    padding: 0 1em;
-    font-size: calc(1rem + 2px);
-    font-weight: 600;
-  }
-  .btn-xxlg {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: var(--btn-xxlg);
-    min-height: var(--btn-xxlg);
-    padding: 0 1.4em;
-    font-size: var(--btn-xxlg-size);
-    font-weight: 600;
-  }
-  .btn-xxlg > .ic {
-    width: var(--ic-lg);
-    height: var(--ic-lg);
-    margin-right: 8px;
-  }
-  .btn-xxlg > span {
-    line-height: var(--leading-sm);
-  }
-  .btn-xxlg > span > em {
-    display: block;
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--color-gray-500);
-  }
-  .btn-primary {
-    background-color: var(--color-midnight-900);
-    color: #fff;
-  }
-  .btn-secondary {
-    background-color: var(--color-midnight-900);
-    color: #fff;
-  }
-  .btn-tertiary {
-    background-color: #fff;
-    border: 1px solid var(--color-midnight-900);
-  }
-  button:disabled {
-    opacity: 0.4;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .btn-primary:not(:disabled):hover {
-      background-color: var(--color-gray-700);
-    }
-    .btn-secondary:not(:disabled):hover {
-      background-color: var(--color-gray-700);
-    }
-    .btn-tertiary:not(:disabled):hover {
-      background-color: var(--color-gray-50);
-    }
+    font-weight: 700;
   }
 
   /* input, select, textarea */
