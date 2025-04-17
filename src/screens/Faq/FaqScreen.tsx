@@ -1,6 +1,9 @@
+import classNames from 'classnames';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 import { faqApi } from '@/src/api';
+import { TabType } from '@/src/api/faq/schema';
 import ContentTitle from '@/src/components/Layout/ContentTitle';
 import ProcessInfoSection from '@/src/components/ProcessSection/ProcessInfoSection';
 import { PROCESS_INFO } from '@/src/constants/contents';
@@ -10,6 +13,24 @@ import { ITEMS_PER_PAGE } from './constants';
 import InquiryInfoSection from './InquiryInfoSection';
 
 import type { FC } from 'react';
+
+// 탭 목록 타입 정의
+type TabItem = {
+  tab: TabType;
+  label: string;
+};
+
+const TAB_LIST: TabItem[] = [
+  {
+    tab: 'CONSULT',
+    label: '서비스 도입',
+  },
+  {
+    tab: 'USAGE',
+    label: '서비스 이용',
+  },
+];
+
 /**
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
@@ -131,30 +152,31 @@ const FaqScreen: FC = () => {
     <div>
       <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
 
-      <div className="mb-6">
-        <div className="flex gap-4 border-b">
-          <button
-            className={`px-4 py-2 ${
-              activeTab === 'CONSULT' ? 'border-b-2 border-blue-500 font-bold' : ''
-            }`}
-            onClick={() => handleTabChange('CONSULT')}
-          >
-            서비스 도입
-          </button>
-          <button
-            className={`px-4 py-2 ${
-              activeTab === 'USAGE' ? 'border-b-2 border-blue-500 font-bold' : ''
-            }`}
-            onClick={() => handleTabChange('USAGE')}
-          >
-            서비스 이용
-          </button>
-        </div>
-      </div>
+      {/* 카테고리 탭 */}
+      <nav>
+        <ul className="flex">
+          {TAB_LIST.map((category: TabItem) => (
+            <li key={category.tab} className="flex-1 [&]:last-of-type:ml-[-1px]">
+              <Link
+                className={classNames(
+                  'flex min-h-(--btn-xlg2) bg-white text-(length:--tab-fsize) border-[1px] border-midnight-100 items-center justify-center leading-[1.1] text-center p-[8px]',
+                  {
+                    'bg-midnight-900! text-white border-midnight-900 font-bold':
+                      activeTab === category.tab,
+                  },
+                )}
+                href={`?category=${category.tab}`}
+              >
+                {category.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       {/* 검색 UI */}
-      <div className="mb-6">
-        <div className="flex gap-2">
+      <div className="mt-(--px-lg)">
+        <div className="flex">
           <div className="relative flex-1">
             <input
               type="text"
@@ -182,6 +204,23 @@ const FaqScreen: FC = () => {
         {isSearching && (
           <div className="mt-2 text-sm text-gray-600">검색 결과 총 {totalRecord}건</div>
         )}
+      </div>
+
+      {/* 탭 목록 */}
+      <div className="mb-6">
+        <div className="flex gap-4 border-b">
+          {TAB_LIST.map((category) => (
+            <button
+              key={category.tab}
+              className={`px-4 py-2 ${
+                activeTab === category.tab ? 'border-b-2 border-blue-500 font-bold' : ''
+              }`}
+              onClick={() => handleTabChange(category.tab)}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* 카테고리 필터 */}
@@ -248,13 +287,10 @@ const FaqScreen: FC = () => {
           </div>
         )}
       </div>
-
       {/* 서비스 문의 */}
       <InquiryInfoSection />
-
       {/* 이용 프로세스 안내 */}
       <ProcessInfoSection title="이용 프로세스 안내" processInfo={PROCESS_INFO} />
-
       {/* app 링크 제공  */}
       <AppInfoSection className="mt-[48px] xl:mt-[64px]" />
     </div>
