@@ -55,7 +55,7 @@ const Header: FC = () => {
             'lg:flex-1 lg:justify-end lg:mr-[-20px] lg:lg:flex',
           )}
         >
-          <ul className="lg:mt-[0]">
+          <ul className="flex lg:mt-[0]">
             {MENUS.map(({ label, href }) => (
               <li key={label} className={classNames('', 'lg:mx-[16px]')}>
                 <Link
