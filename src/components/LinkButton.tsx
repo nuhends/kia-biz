@@ -12,7 +12,7 @@ interface LinkButtonProps extends ComponentProps<'a'>, PropsWithChildren {
 const BUTTON_SIZES: Record<ButtonSize, string> = {
   xlg: 'min-w-[8em] h-(--btn-xlg) py-[0] px-[1em] text-[calc(1rem+2px)]',
   xxlg: classNames(
-    'h-(--btn-xxlg) min-h-(--btn-xxlg) py-[0] px-[1.4em] text-(--btn-xxlg-size)',
+    'h-(--btn-xxlg) min-h-(--btn-xxlg) py-[0] px-[1.4em] text-(length:--btn-xxlg-size)',
     '[&>svg]:shrink-0 [&>svg]:w-(--ic-lg) [&>svg]:h-(--ic-lg) [&>svg]:mr-[8px]',
     '[&>span]:leading-sm [&>span>em]:block [&>span>em]:text-gray-500 text-[14px]',
   ),

@@ -37,7 +37,6 @@ const InquiryInfoSection: FC<ComponentProps<'section'>> = () => {
           <IconWrite />
           <span>상담문의 등록하기</span>
         </LinkButton>
-
         <LinkButton
           href={URLS.KAKAO_CHANNEL}
           size="xxlg"
