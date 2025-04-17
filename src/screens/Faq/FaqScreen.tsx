@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
+import IconClear from '@/public/svgs/ic_clear.svg';
+import IconSearch from '@/public/svgs/ic_search.svg';
 import { faqApi } from '@/src/api';
-import { TabType } from '@/src/api/faq/schema';
 import ContentTitle from '@/src/components/Layout/ContentTitle';
 import ProcessInfoSection from '@/src/components/ProcessSection/ProcessInfoSection';
 import { PROCESS_INFO } from '@/src/constants/contents';
@@ -13,23 +13,7 @@ import { ITEMS_PER_PAGE } from './constants';
 import InquiryInfoSection from './InquiryInfoSection';
 
 import type { FC } from 'react';
-
-// 탭 목록 타입 정의
-type TabItem = {
-  tab: TabType;
-  label: string;
-};
-
-const TAB_LIST: TabItem[] = [
-  {
-    tab: 'CONSULT',
-    label: '서비스 도입',
-  },
-  {
-    tab: 'USAGE',
-    label: '서비스 이용',
-  },
-];
+import CategoryNavTab from './CategoryNavTab';
 
 /**
  * FAQ 화면 컴포넌트
@@ -79,7 +63,7 @@ const FaqScreen: FC = () => {
     };
 
     fetchData();
-  }, [activeTab, selectedCategoryID, currentPage, isSearching, searchQuery]);
+  }, [activeTab, selectedCategoryID, currentPage, isSearching]);
 
   // 이벤트 핸들러
   const handleTabChange = (tab: faqApi.TabType) => {
@@ -153,74 +137,49 @@ const FaqScreen: FC = () => {
       <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
 
       {/* 카테고리 탭 */}
-      <nav>
-        <ul className="flex">
-          {TAB_LIST.map((category: TabItem) => (
-            <li key={category.tab} className="flex-1 [&]:last-of-type:ml-[-1px]">
-              <Link
-                className={classNames(
-                  'flex min-h-(--btn-xlg2) bg-white text-(length:--tab-fsize) border-[1px] border-midnight-100 items-center justify-center leading-[1.1] text-center p-[8px]',
-                  {
-                    'bg-midnight-900! text-white border-midnight-900 font-bold':
-                      activeTab === category.tab,
-                  },
-                )}
-                href={`?category=${category.tab}`}
-              >
-                {category.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <CategoryNavTab />
 
       {/* 검색 UI */}
-      <div className="mt-(--px-lg)">
-        <div className="flex">
+      <div className="mt-(--px-lg) md:bg-gray-10 md:p-(--px-md)">
+        <div className="flex w-(--search-bar-width)">
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="검색어를 입력하세요"
-              className="w-full px-4 py-2 border rounded"
+              placeholder="찾으시는 내용을 입력해 주세요"
+              className={classNames(
+                'w-full h-(--btn-xlg2) pl-[16px] pr-[calc(var(--ic-sm)+var(--clear-space)+var(--btn-xlg2)-2px)] text-[1rem] border-midnight-900 bg-white',
+              )}
               value={searchQuery}
               onChange={handleSearchInputChange}
               onKeyDown={handleSearchKeyDown}
             />
             {searchQuery && (
               <button
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                onClick={handleResetSearch}
+                className="flex items-center justify-center absolute top-[1px] right-[calc(var(--btn-xlg2)-1px)] h-[calc(100%-2px)]"
                 type="button"
-                aria-label="검색어 초기화"
+                onClick={handleResetSearch}
               >
-                ✕
+                <span aria-hidden="true" className="w-[24px] h-[24px]">
+                  <IconClear />
+                </span>
+                <span className="blind">검색어 초기화</span>
               </button>
             )}
+            <button
+              className="flex items-center justify-center absolute top-[1px] right-[1px] w-[calc(var(--btn-xlg2)-2px)] h-[calc(100%-2px)] text-white"
+              type="button"
+              onClick={handleSearch}
+            >
+              <span aria-hidden="true" className="w-[24px] h-[24px]">
+                <IconSearch />
+              </span>
+              <span className="blind">검색</span>
+            </button>
           </div>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={handleSearch}>
-            검색
-          </button>
         </div>
         {isSearching && (
           <div className="mt-2 text-sm text-gray-600">검색 결과 총 {totalRecord}건</div>
         )}
-      </div>
-
-      {/* 탭 목록 */}
-      <div className="mb-6">
-        <div className="flex gap-4 border-b">
-          {TAB_LIST.map((category) => (
-            <button
-              key={category.tab}
-              className={`px-4 py-2 ${
-                activeTab === category.tab ? 'border-b-2 border-blue-500 font-bold' : ''
-              }`}
-              onClick={() => handleTabChange(category.tab)}
-            >
-              {category.label}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* 카테고리 필터 */}
