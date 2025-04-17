@@ -9,14 +9,13 @@ import ProcessInfoSection from '@/src/components/ProcessSection/ProcessInfoSecti
 import { PROCESS_INFO } from '@/src/constants/contents';
 
 import AppInfoSection from './AppInfoSection';
+import CategoryNavTab from './CategoryNavTab';
 import { ITEMS_PER_PAGE } from './constants';
+import FaqSection from './FaqSection';
+import FilterList from './FilterList';
 import InquiryInfoSection from './InquiryInfoSection';
 
 import type { FC } from 'react';
-import CategoryNavTab from './CategoryNavTab';
-import Link from 'next/link';
-import FilterList from './FilterList';
-
 /**
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
@@ -30,6 +29,7 @@ const FaqScreen: FC = () => {
   const [categories, setCategories] = useState<faqApi.FaqCategory[]>([]);
   const [selectedCategoryID, setSelectedCategoryID] = useState<faqApi.FaqCategoryID | null>(null);
   const [faqs, setFaqs] = useState<faqApi.Faq[]>([]);
+  const [faqsData, setFaqsData] = useState<faqApi.FaqListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -53,6 +53,7 @@ const FaqScreen: FC = () => {
             currentPage * ITEMS_PER_PAGE,
           ),
         ]);
+        setFaqsData(faqsResult);
         setCategories(categoriesResult);
         setFaqs(faqsResult.items);
         setTotalRecord(faqsResult.pageInfo.totalRecord);
@@ -132,8 +133,6 @@ const FaqScreen: FC = () => {
     return <div className="text-center p-8 text-red-500">{error}</div>;
   }
 
-  const totalPages = Math.ceil(totalRecord / ITEMS_PER_PAGE);
-
   return (
     <div>
       <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
@@ -183,74 +182,10 @@ const FaqScreen: FC = () => {
           <div className="mt-2 text-sm text-gray-600">검색 결과 총 {totalRecord}건</div>
         )}
       </div>
-
       {/* 카테고리 필터 */}
       <FilterList categories={categories} className="mt-(--px-md)" />
-
-      {/* 더미 카테고리 필터 */}
-      {/* <div className="mb-6">
-        <div className="flex flex-wrap gap-2">
-          <button
-            className={`px-4 py-2 rounded ${
-              selectedCategoryID === null ? 'bg-blue-500 text-white' : 'bg-gray-200'
-            }`}
-            onClick={() => handleCategorySelect(null)}
-          >
-            전체
-          </button>
-          {categories.map((category) => (
-            <button
-              key={category.categoryID}
-              className={`px-4 py-2 rounded ${
-                selectedCategoryID === category.categoryID
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200'
-              }`}
-              onClick={() => handleCategorySelect(category.categoryID as faqApi.FaqCategoryID)}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-      </div> */}
-
       {/* FAQ 목록 */}
-      <div className="space-y-4">
-        {faqs.length > 0 ? (
-          <>
-            {faqs.map((faq) => (
-              <div key={faq.id} className="border rounded p-4">
-                <div className="text-gray-600">{`${faq.categoryName} > ${faq.subCategoryName}`}</div>
-                <h3 className="font-bold mb-2">{faq.question}</h3>
-                <div
-                  className="text-gray-600 hidden"
-                  dangerouslySetInnerHTML={{ __html: faq.answer }}
-                />
-              </div>
-            ))}
-            {/* 페이지네이션 */}
-            {totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-6">
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handlePageChange(i)}
-                    className={`px-4 py-2 rounded ${
-                      currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="text-center p-8 border rounded">
-            <p>해당 카테고리의 FAQ가 없습니다.</p>
-          </div>
-        )}
-      </div>
+      <FaqSection faqsData={faqsData} tabType={activeTab} />
       {/* 서비스 문의 */}
       <InquiryInfoSection />
       {/* 이용 프로세스 안내 */}
