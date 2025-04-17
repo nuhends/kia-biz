@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './Header.css';
 
 @theme {
   --color-mint-900: #70d7bf;
