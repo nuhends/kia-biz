@@ -14,6 +14,8 @@ import InquiryInfoSection from './InquiryInfoSection';
 
 import type { FC } from 'react';
 import CategoryNavTab from './CategoryNavTab';
+import Link from 'next/link';
+import FilterList from './FilterList';
 
 /**
  * FAQ 화면 컴포넌트
@@ -183,7 +185,10 @@ const FaqScreen: FC = () => {
       </div>
 
       {/* 카테고리 필터 */}
-      <div className="mb-6">
+      <FilterList categories={categories} className="mt-(--px-md)" />
+
+      {/* 더미 카테고리 필터 */}
+      {/* <div className="mb-6">
         <div className="flex flex-wrap gap-2">
           <button
             className={`px-4 py-2 rounded ${
@@ -207,7 +212,7 @@ const FaqScreen: FC = () => {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* FAQ 목록 */}
       <div className="space-y-4">
