@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import LogoAppStore from '@/public/svgs/logo_appstore.svg';
 import LogoGooglePlay from '@/public/svgs/logo_googleplay.svg';
 import { faqApi } from '@/src/api';
+import ContentTitle from '@/src/components/Layout/ContentTitle';
 import { URLS } from '@/src/constants/meta';
 
 import { ITEMS_PER_PAGE } from './constants';
@@ -10,6 +11,7 @@ import InquiryInfoSection from './InquiryInfoSection';
 import ProcessInfoSection from './ProcessInfoSection';
 
 import type { FC } from 'react';
+
 /**
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
@@ -129,10 +131,8 @@ const FaqScreen: FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">자주 묻는 질문</h2>
-      <p>궁금하신 내용을 빠르게 찾아보세요.</p>
+      <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
 
-      {/* 탭 선택 */}
       <div className="mb-6">
         <div className="flex gap-4 border-b">
           <button
