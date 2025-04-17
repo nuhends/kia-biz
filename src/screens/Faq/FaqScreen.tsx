@@ -4,14 +4,14 @@ import LogoAppStore from '@/public/svgs/logo_appstore.svg';
 import LogoGooglePlay from '@/public/svgs/logo_googleplay.svg';
 import { faqApi } from '@/src/api';
 import ContentTitle from '@/src/components/Layout/ContentTitle';
+import { PROCESS_INFO } from '@/src/constants/contents';
 import { URLS } from '@/src/constants/meta';
 
 import { ITEMS_PER_PAGE } from './constants';
 import InquiryInfoSection from './InquiryInfoSection';
-import ProcessInfoSection from './ProcessInfoSection';
+import ProcessInfoSection from '../../components/ProcessSection/ProcessInfoSection';
 
 import type { FC } from 'react';
-
 /**
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
@@ -255,7 +255,7 @@ const FaqScreen: FC = () => {
       <InquiryInfoSection />
 
       {/* 이용 프로세스 안내 */}
-      <ProcessInfoSection />
+      <ProcessInfoSection title="이용 프로세스 안내" processInfo={PROCESS_INFO} />
 
       {/* app 링크 제공  */}
       <section>
