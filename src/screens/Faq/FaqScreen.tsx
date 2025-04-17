@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import IconProcess01 from '@/public/svgs/ic_process01.svg';
-import IconProcess02 from '@/public/svgs/ic_process02.svg';
-import IconProcess03 from '@/public/svgs/ic_process03.svg';
-import IconProcess04 from '@/public/svgs/ic_process04.svg';
 import LogoAppStore from '@/public/svgs/logo_appstore.svg';
 import LogoGooglePlay from '@/public/svgs/logo_googleplay.svg';
 import { faqApi } from '@/src/api';
@@ -11,9 +7,9 @@ import { URLS } from '@/src/constants/meta';
 
 import { ITEMS_PER_PAGE } from './constants';
 import InquiryInfoSection from './InquiryInfoSection';
+import ProcessInfoSection from './ProcessInfoSection';
 
 import type { FC } from 'react';
-
 /**
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
@@ -259,39 +255,7 @@ const FaqScreen: FC = () => {
       <InquiryInfoSection />
 
       {/* 이용 프로세스 안내 */}
-      <section>
-        <h3 className="heading-2">이용 프로세스 안내</h3>
-        <ol>
-          <li>
-            <div>
-              <IconProcess01 />
-              <strong>문의 등록</strong>
-              <em>상담 문의를 등록해 주시면, 담당자가 맞춤형 상담을 제공합니다.</em>
-            </div>
-          </li>
-          <li>
-            <div>
-              <IconProcess02 />
-              <strong>관리자 설정</strong>
-              <em>관리자 Web 접속 후 결제방식 및 회사정보를 설정합니다.</em>
-            </div>
-          </li>
-          <li>
-            <div>
-              <IconProcess03 />
-              <strong>임직원 가입</strong>
-              <em>이용자 App에서 회원가입 후 소속 회사 인증을 진행합니다.</em>
-            </div>
-          </li>
-          <li>
-            <div>
-              <IconProcess04 />
-              <strong>서비스 이용</strong>
-              <em>이용자 App에서 차량 예약을 하고 K존에서 바로 이용하세요!</em>
-            </div>
-          </li>
-        </ol>
-      </section>
+      <ProcessInfoSection />
 
       {/* app 링크 제공  */}
       <section>
