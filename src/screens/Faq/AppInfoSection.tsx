@@ -43,7 +43,7 @@ const AppInfoSection: FC<ComponentProps<'section'>> = ({ className }) => {
             <span
               aria-hidden="true"
               className={classNames(
-                'w-[24px] h-[24px] mr-[4px]',
+                'w-[24px] h-[24px] mr-[4px] [&>svg]:w-full [&>svg]:h-full',
                 'lg:w-[28px] lg:h-[28px]',
                 'xl:w-[32px] xl:h-[32px]',
               )}
