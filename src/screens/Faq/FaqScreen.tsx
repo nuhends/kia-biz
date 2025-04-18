@@ -219,7 +219,7 @@ const FaqScreen: FC<FaqScreenProps> = ({ categories, faqData, initialTab }) => {
       {/* 카테고리 필터 */}
       <FilterList categories={categories} className="mt-(--px-md)" />
       {/* FAQ 목록 */}
-      <FaqSection faqData={faqData} tabType={activeTab} />
+      <FaqSection faqData={faqData} initialTab={initialTab} />
       {/* 서비스 문의 */}
       <InquiryInfoSection />
       {/* 이용 프로세스 안내 */}

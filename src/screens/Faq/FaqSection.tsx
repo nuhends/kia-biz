@@ -1,4 +1,4 @@
-import type { FaqListResponse, TabType } from '@/src/api/faq/schema';
+import type { FaqListResponse } from '@/src/api/faq/schema';
 import classNames from 'classnames';
 
 import IconNoData from '@/public/svgs/ic_nodata.svg';
@@ -10,12 +10,12 @@ import type { ComponentProps } from 'react';
 
 interface Props extends ComponentProps<'section'> {
   faqData: FaqListResponse;
-  tabType: TabType;
+  initialTab: string;
 }
 
-const FaqSection = ({ faqData, tabType, className }: Props) => {
+const FaqSection = ({ faqData, initialTab, className }: Props) => {
   const { items, pageInfo } = faqData;
-  const hideSubCategory = tabType === 'CONSULT';
+  const hideSubCategory = initialTab === 'CONSULT';
   const totalPages = Math.ceil(pageInfo?.totalRecord ?? 1 / ITEMS_PER_PAGE);
 
   return (
