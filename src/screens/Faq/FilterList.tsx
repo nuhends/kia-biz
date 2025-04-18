@@ -7,12 +7,12 @@ import FilterItem from './FilterItem';
 
 interface Props extends ComponentProps<'ul'> {
   categories: FaqCategory[];
+  questionValue: string;
 }
 
-const FilterList: FC<Props> = ({ categories, className }) => {
+const FilterList: FC<Props> = ({ categories, className, questionValue }) => {
   const { pathname, query } = useRouter();
-
-  const { page, categoryID, ...excludedQuery } = query;
+  const { page, categoryID, question, ...excludedQuery } = query;
   const refinedCategories = [{ categoryID: '', name: '전체' }, ...categories];
   const currentCategory = query?.categoryID || refinedCategories[0].categoryID;
 
@@ -27,6 +27,7 @@ const FilterList: FC<Props> = ({ categories, className }) => {
               query: {
                 ...excludedQuery,
                 ...(categoryID !== '' && { categoryID }),
+                ...(questionValue && { question: questionValue }),
               },
             }}
             label={name}

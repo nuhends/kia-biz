@@ -13,7 +13,7 @@ interface Props extends ComponentProps<'section'> {
   initialTab: string;
 }
 
-const FaqSection = ({ faqData, initialTab, className }: Props) => {
+const FaqList = ({ faqData, initialTab, className }: Props) => {
   const { items, pageInfo } = faqData;
   const hideSubCategory = initialTab === 'CONSULT';
   const totalPages = Math.ceil(pageInfo?.totalRecord ?? 1 / ITEMS_PER_PAGE);
@@ -59,4 +59,4 @@ const FaqSection = ({ faqData, initialTab, className }: Props) => {
   );
 };
 
-export default FaqSection;
+export default FaqList;

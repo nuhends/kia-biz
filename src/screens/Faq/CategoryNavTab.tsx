@@ -22,9 +22,10 @@ type TabItemProps = {
   active: boolean;
   category: TabItem;
   href: LinkProps['href'];
+  onClickCallback: () => void;
 };
 
-const NavTabItem: FC<TabItemProps> = ({ active, category, href }) => (
+const NavTabItem: FC<TabItemProps> = ({ active, category, href, onClickCallback }) => (
   <Link
     className={classNames(
       'flex min-h-(--btn-xlg2) p-[8px] bg-white text-(length:--tab-fsize) border-[1px] border-midnight-100 items-center justify-center leading-[1.1] text-center',
@@ -32,6 +33,7 @@ const NavTabItem: FC<TabItemProps> = ({ active, category, href }) => (
     )}
     href={href}
     scroll={false}
+    onClick={() => onClickCallback()}
   >
     {category.label}
   </Link>
@@ -39,11 +41,12 @@ const NavTabItem: FC<TabItemProps> = ({ active, category, href }) => (
 
 interface CategoryNavTabProps {
   initialTab: string;
+  onClickNavTab: () => void;
 }
 
-const CategoryNavTab: FC<CategoryNavTabProps> = ({ initialTab }) => {
+const CategoryNavTab: FC<CategoryNavTabProps> = ({ initialTab, onClickNavTab: onClickNavTab }) => {
   const { pathname, query } = useRouter();
-  const { page, categoryID, ...excludedQuery } = query;
+  const { page, categoryID, question, ...excludedQuery } = query;
   const currentTab = query.tab || initialTab;
 
   return (
@@ -55,6 +58,7 @@ const CategoryNavTab: FC<CategoryNavTabProps> = ({ initialTab }) => {
               active={currentTab === category.tab}
               category={category}
               href={{ pathname, query: { ...excludedQuery, tab: category.tab } }}
+              onClickCallback={onClickNavTab}
             />
           </li>
         ))}

@@ -17,7 +17,7 @@ interface Props extends FaqScreenProps {
   terms: Term[];
 }
 
-const FaqPage: NextPageWithLayout<Props> = ({ categories, faqData, initialTab }) => {
+const FaqPage: NextPageWithLayout<Props> = ({ ...faqScreenProps }) => {
   return (
     <>
       <Head>
@@ -25,7 +25,7 @@ const FaqPage: NextPageWithLayout<Props> = ({ categories, faqData, initialTab })
         <meta name="title" content={META.FAQ.TITLE} />
         <meta property="og:title" content={META.FAQ.TITLE} />
       </Head>
-      <FaqScreen categories={categories} faqData={faqData} initialTab={initialTab} />
+      <FaqScreen {...faqScreenProps} />
     </>
   );
 };
@@ -48,6 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const defaultTab = FAQ_TAB_LIST[0].tab;
   const initialTab = String(query?.tab || defaultTab);
   const categoryID = String(query?.categoryID || '');
+  const initialQuestionQuery = String(query?.question || '');
 
   const [categories, terms, faqData] = await Promise.all([
     getFaqCategories(initialTab),
@@ -55,6 +56,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     getFaqs({
       tab: initialTab,
       ...(categoryID && { categoryID }),
+      ...(initialQuestionQuery && { question: initialQuestionQuery }),
     }),
   ]);
 
@@ -63,6 +65,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       categories,
       faqData,
       initialTab,
+      initialQuestionQuery,
       terms,
     },
   };
