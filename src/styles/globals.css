@@ -377,16 +377,6 @@
     border: none;
   }
 
-  /* Mixin */
-  .blind {
-    position: absolute;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-  }
-
   /* Common  */
   .heading-2 {
     margin: var(--heading-2-margin);
@@ -431,12 +421,6 @@
   }
 
   /* footer */
-  footer {
-    position: relative;
-    padding: 0 var(--side-padding);
-    color: var(--color-gray-400);
-    background-color: var(--color-midnight-900);
-  }
   @media (max-width: 743px) {
     footer {
       --font-md: 12px;
