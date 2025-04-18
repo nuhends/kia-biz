@@ -14,7 +14,7 @@ export async function getFaqCategories(tab: string): Promise<FaqCategory[]> {
     queryParams.append('tab', tab);
 
     // 유틸리티 함수를 사용하여 API URL 생성
-    const apiUrl = getApiUrl('/api/faqCategories', queryParams);
+    const apiUrl = getApiUrl('/api/faq/categories', queryParams);
 
     const response = await fetch(apiUrl, {
       method: 'GET',

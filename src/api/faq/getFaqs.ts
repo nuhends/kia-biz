@@ -36,7 +36,7 @@ export async function getFaqs(params: {
     queryParams.append('offset', offset.toString());
 
     // 유틸리티 함수를 사용하여 API URL 생성
-    const apiUrl = getApiUrl('/api/faqs', queryParams);
+    const apiUrl = getApiUrl('/api/faq/faqs', queryParams);
 
     const response = await fetch(apiUrl, {
       method: 'GET',
