@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import { ChangeEvent, FC, KeyboardEvent } from 'react';
 
 import IconClear from '@/public/svgs/ic_clear.svg';
 import IconInit from '@/public/svgs/ic_init.svg';
 import IconSearch from '@/public/svgs/ic_search.svg';
 
 import { useFaqContext } from './contexts/FaqContext';
+
+import type { ChangeEvent, FC, KeyboardEvent } from 'react';
 
 const QUESTION_MIN_LENGTH = 2;
 
@@ -17,7 +18,7 @@ interface Props {
 const FaqSearchGroup: FC<Props> = ({ totalRecord }) => {
   const { pathname, push, query } = useRouter();
   const { page, question, ...excludedQuery } = query;
-  const { questionValue, setQuestionValue, resetQuestionValue, setIsLoading } = useFaqContext();
+  const { questionValue, setQuestionValue, resetQuestionValue, setIsRouting } = useFaqContext();
 
   const handleSearch = () => {
     if (questionValue.trim().length < QUESTION_MIN_LENGTH) {
@@ -25,7 +26,7 @@ const FaqSearchGroup: FC<Props> = ({ totalRecord }) => {
       return;
     }
 
-    setIsLoading(true);
+    setIsRouting(true);
     push({
       pathname,
       query: {
@@ -33,7 +34,7 @@ const FaqSearchGroup: FC<Props> = ({ totalRecord }) => {
         question: questionValue,
       },
     }).finally(() => {
-      setIsLoading(false);
+      setIsRouting(false);
     });
   };
 

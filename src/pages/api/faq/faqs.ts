@@ -1,8 +1,10 @@
 import fs from 'fs';
-import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path';
 
 import { Faq, FaqCategoryIDSchema, FaqsResponse, TabTypeSchema } from '@/src/api/faq/schema';
+import { ITEMS_PER_PAGE } from '@/src/screens/Faq/constants';
+
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 // db.json 파일에서 FAQ 데이터 가져오기
 const dbPath = path.join(process.cwd(), 'db.json');
@@ -55,7 +57,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     // 페이지네이션 처리
-    const parsedLimit = limit ? parseInt(limit as string, 10) : 10;
+    const parsedLimit = limit ? parseInt(limit as string, 10) : ITEMS_PER_PAGE;
     const parsedOffset = offset ? parseInt(offset as string, 10) : 0;
 
     // 전체 데이터 개수

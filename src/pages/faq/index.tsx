@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       categories,
-      faqData,
+      initialFaqData: faqData,
       initialTab,
       initialQuestionQuery,
       terms,

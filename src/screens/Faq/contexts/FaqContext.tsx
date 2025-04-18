@@ -1,34 +1,65 @@
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+import type { FaqListResponse } from '@/src/api/faq/schema';
+
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
+import type { ReactNode } from 'react';
 
 interface FaqContextType {
-  questionValue: string;
-  setQuestionValue: (value: string) => void;
-  setIsLoading: (value: boolean) => void;
-  resetQuestionValue: () => void;
+  faqData: FaqListResponse;
   isLoading: boolean;
+  isRouting: boolean;
+  questionValue: string;
+  resetQuestionValue: () => void;
+  setFaqData: Dispatch<SetStateAction<FaqListResponse>>;
+  setQuestionValue: Dispatch<SetStateAction<string>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setIsRouting: Dispatch<SetStateAction<boolean>>;
 }
 
 const FaqContext = createContext<FaqContextType | undefined>(undefined);
 
 interface FaqProviderProps {
   children: ReactNode;
+  initialFaqData: FaqListResponse;
   initialQuestionQuery?: string;
 }
 
-export const FaqProvider = ({ children, initialQuestionQuery }: FaqProviderProps) => {
-  const [questionValue, setQuestionValue] = useState(initialQuestionQuery ?? '');
+export const FaqProvider = ({
+  children,
+  initialFaqData,
+  initialQuestionQuery,
+}: FaqProviderProps) => {
+  const [isRouting, setIsRouting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [faqData, setFaqData] = useState<FaqListResponse>(initialFaqData);
+  const [questionValue, setQuestionValue] = useState(initialQuestionQuery ?? '');
 
   const resetQuestionValue = useCallback(() => setQuestionValue(''), []);
+
+  useEffect(() => {
+    setFaqData(initialFaqData);
+  }, [initialFaqData]);
 
   return (
     <FaqContext.Provider
       value={{
-        questionValue,
-        setQuestionValue,
-        resetQuestionValue,
+        faqData,
         isLoading,
+        isRouting,
+        questionValue,
+        resetQuestionValue,
+        setFaqData,
         setIsLoading,
+        setIsRouting,
+        setQuestionValue,
       }}
     >
       {children}

@@ -16,28 +16,28 @@ import type { FaqCategory } from '@/src/api/faq/schema';
 
 export interface FaqScreenProps {
   categories: FaqCategory[];
-  faqData: FaqListResponse;
+  initialFaqData: FaqListResponse;
   initialTab: string;
   initialQuestionQuery?: string;
 }
 
 const FaqScreen: FC<FaqScreenProps> = ({
   categories,
-  faqData,
+  initialFaqData,
   initialTab,
   initialQuestionQuery,
 }) => {
   return (
-    <FaqProvider initialQuestionQuery={initialQuestionQuery}>
+    <FaqProvider initialFaqData={initialFaqData} initialQuestionQuery={initialQuestionQuery}>
       <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
       {/* 카테고리 탭 */}
       <CategoryNavTab initialTab={initialTab} />
       {/* 검색 UI */}
-      <FaqSearchGroup totalRecord={faqData.pageInfo.totalRecord} />
+      <FaqSearchGroup totalRecord={initialFaqData.pageInfo.totalRecord} />
       {/* 카테고리 필터 */}
       <FilterList className="mt-(--px-md)" categories={categories} />
       {/* FAQ 목록 */}
-      <FaqList faqData={faqData} initialTab={initialTab} />
+      <FaqList initialTab={initialTab} />
       {/* 서비스 문의 */}
       <InquiryInfoSection />
       {/* 이용 프로세스 안내 */}
