@@ -5,10 +5,10 @@ import { getApiUrl } from '@/src/utils/api';
 
 /**
  * 탭별 카테고리 목록 조회
- * @param tab 탭 유형 (CONSULT 또는 USAGE)
+ * @param tab 탭 유형
  * @returns 카테고리 목록
  */
-export async function getFaqCategories(tab: TabType): Promise<FaqCategory[]> {
+export async function getFaqCategories(tab: string): Promise<FaqCategory[]> {
   try {
     const queryParams = new URLSearchParams();
     queryParams.append('tab', tab);
@@ -34,7 +34,7 @@ export async function getFaqCategories(tab: TabType): Promise<FaqCategory[]> {
     const validatedData = FaqCategoriesResponseSchema.parse(rawData);
 
     // 요청한 탭의 카테고리 데이터 반환
-    return validatedData[tab] || [];
+    return validatedData[tab as TabType] || [];
   } catch (error) {
     if (error instanceof z.ZodError) {
       // zod 검증 에러 처리

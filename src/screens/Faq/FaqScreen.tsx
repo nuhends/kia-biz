@@ -17,6 +17,8 @@ import FilterList from './FilterList';
 import InquiryInfoSection from './InquiryInfoSection';
 
 import type { FC } from 'react';
+import type { FaqCategory } from '@/src/api/faq/schema';
+
 /**
  * FAQ 화면 컴포넌트
  * - 탭(CONSULT/USAGE)에 따라 카테고리 목록을 불러와 표시
@@ -24,10 +26,14 @@ import type { FC } from 'react';
  * - 선택된 탭과 카테고리에 따라 FAQ 목록 표시
  * - 검색 기능 제공
  */
-const FaqScreen: FC = () => {
+export interface FaqScreenProps {
+  categories: FaqCategory[];
+  initialTab: string;
+}
+
+const FaqScreen: FC<FaqScreenProps> = ({ categories, initialTab }) => {
   // 상태 관리
   const [activeTab, setActiveTab] = useState<faqApi.TabType>('CONSULT');
-  const [categories, setCategories] = useState<faqApi.FaqCategory[]>([]);
   const [selectedCategoryID, setSelectedCategoryID] = useState<faqApi.FaqCategoryID | null>(null);
   const [faqs, setFaqs] = useState<faqApi.Faq[]>([]);
   const [faqsData, setFaqsData] = useState<faqApi.FaqListResponse | null>(null);
@@ -55,7 +61,7 @@ const FaqScreen: FC = () => {
           ),
         ]);
         setFaqsData(faqsResult);
-        setCategories(categoriesResult);
+        // setCategories(categoriesResult);
         setFaqs(faqsResult.items);
         setTotalRecord(faqsResult.pageInfo.totalRecord);
       } catch (err) {
@@ -126,9 +132,9 @@ const FaqScreen: FC = () => {
   };
 
   // 로딩 및 에러 처리
-  if (loading && !categories.length) {
-    return <div className="text-center p-8">로딩 중...</div>;
-  }
+  // if (loading && !categories.length) {
+  //   return <div className="text-center p-8">로딩 중...</div>;
+  // }
 
   if (error) {
     return <div className="text-center p-8 text-red-500">{error}</div>;
@@ -138,7 +144,7 @@ const FaqScreen: FC = () => {
     <>
       <ContentTitle title="자주 묻는 질문" description="궁금하신 내용을 빠르게 찾아보세요." />
       {/* 카테고리 탭 */}
-      <CategoryNavTab />
+      <CategoryNavTab initialTab={initialTab} />
       {/* 검색 UI */}
       <div className="mt-(--px-lg) md:bg-gray-10 md:p-(--px-md)">
         <div className="flex w-(--search-bar-width)">
