@@ -3,7 +3,9 @@ import { createContext, ReactNode, useCallback, useContext, useState } from 'rea
 interface FaqContextType {
   questionValue: string;
   setQuestionValue: (value: string) => void;
+  setIsLoading: (value: boolean) => void;
   resetQuestionValue: () => void;
+  isLoading: boolean;
 }
 
 const FaqContext = createContext<FaqContextType | undefined>(undefined);
@@ -15,6 +17,7 @@ interface FaqProviderProps {
 
 export const FaqProvider = ({ children, initialQuestionQuery }: FaqProviderProps) => {
   const [questionValue, setQuestionValue] = useState(initialQuestionQuery ?? '');
+  const [isLoading, setIsLoading] = useState(false);
 
   const resetQuestionValue = useCallback(() => setQuestionValue(''), []);
 
@@ -24,6 +27,8 @@ export const FaqProvider = ({ children, initialQuestionQuery }: FaqProviderProps
         questionValue,
         setQuestionValue,
         resetQuestionValue,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}

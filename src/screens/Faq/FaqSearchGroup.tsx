@@ -17,7 +17,7 @@ interface Props {
 const FaqSearchGroup: FC<Props> = ({ totalRecord }) => {
   const { pathname, push, query } = useRouter();
   const { page, question, ...excludedQuery } = query;
-  const { questionValue, setQuestionValue, resetQuestionValue } = useFaqContext();
+  const { questionValue, setQuestionValue, resetQuestionValue, setIsLoading } = useFaqContext();
 
   const handleSearch = () => {
     if (questionValue.trim().length < QUESTION_MIN_LENGTH) {
@@ -25,12 +25,15 @@ const FaqSearchGroup: FC<Props> = ({ totalRecord }) => {
       return;
     }
 
+    setIsLoading(true);
     push({
       pathname,
       query: {
         ...excludedQuery,
         question: questionValue,
       },
+    }).finally(() => {
+      setIsLoading(false);
     });
   };
 
