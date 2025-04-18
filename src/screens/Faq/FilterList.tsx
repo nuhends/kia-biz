@@ -1,7 +1,9 @@
 import type { FaqCategory } from '@/src/api/faq/schema';
 import type { ComponentProps, FC } from 'react';
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
 
+import { useFaqContext } from './contexts/FaqContext';
 import FilterItem from './FilterItem';
 
 interface Props extends ComponentProps<'ul'> {
@@ -9,19 +11,30 @@ interface Props extends ComponentProps<'ul'> {
 }
 
 const FilterList: FC<Props> = ({ categories, className }) => {
+  const { pathname, query } = useRouter();
+  const { page, categoryID, question, ...excludedQuery } = query;
+  const { questionValue } = useFaqContext();
+  const refinedCategories = [{ categoryID: '', name: '전체' }, ...categories];
+  const currentCategory = query?.categoryID || refinedCategories[0].categoryID;
+
   return (
     <ul className={classNames('flex flex-wrap mb-(--px-md)', className)}>
-      <li>
-        <FilterItem active href="?categoryID=ALL" label="전체" />
-      </li>
-
-      {categories.map((category) => {
-        return (
-          <li key={category.categoryID}>
-            <FilterItem href={`?categoryID=${category.categoryID}`} label={category.name} />
-          </li>
-        );
-      })}
+      {refinedCategories.map(({ categoryID, name }) => (
+        <li key={categoryID}>
+          <FilterItem
+            active={categoryID === currentCategory}
+            href={{
+              pathname,
+              query: {
+                ...excludedQuery,
+                ...(categoryID !== '' && { categoryID }),
+                ...(questionValue && { question: questionValue }),
+              },
+            }}
+            label={name}
+          />
+        </li>
+      ))}
     </ul>
   );
 };

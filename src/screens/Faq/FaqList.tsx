@@ -1,4 +1,4 @@
-import type { FaqListResponse, TabType } from '@/src/api/faq/schema';
+import type { FaqListResponse } from '@/src/api/faq/schema';
 import classNames from 'classnames';
 
 import IconNoData from '@/public/svgs/ic_nodata.svg';
@@ -9,20 +9,20 @@ import FaqItem from './FaqItem';
 import type { ComponentProps } from 'react';
 
 interface Props extends ComponentProps<'section'> {
-  faqsData: FaqListResponse | null;
-  tabType: TabType;
+  faqData: FaqListResponse;
+  initialTab: string;
 }
 
-const FaqSection = ({ faqsData, tabType, className }: Props) => {
-  const { items: faqs = [], pageInfo } = faqsData ?? {};
-  const hideSubCategory = tabType === 'CONSULT';
+const FaqList = ({ faqData, initialTab, className }: Props) => {
+  const { items, pageInfo } = faqData;
+  const hideSubCategory = initialTab === 'CONSULT';
   const totalPages = Math.ceil(pageInfo?.totalRecord ?? 1 / ITEMS_PER_PAGE);
 
   return (
     <section className={classNames('border-t-2 border-midnight-900', className)}>
-      {faqs?.length > 0 ? (
+      {items.length > 0 ? (
         <ul>
-          {faqs.map((faq) => (
+          {items.map((faq) => (
             <FaqItem key={faq.id} hideSubCategory={hideSubCategory} {...faq} />
           ))}
         </ul>
@@ -59,4 +59,4 @@ const FaqSection = ({ faqsData, tabType, className }: Props) => {
   );
 };
 
-export default FaqSection;
+export default FaqList;
