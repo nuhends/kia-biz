@@ -327,6 +327,7 @@
     color: var(--color-midnight-900);
     text-decoration: none;
     cursor: pointer;
+    -webkit-user-drag: none;
   }
   ul,
   ol {
