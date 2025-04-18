@@ -9,20 +9,20 @@ import FaqItem from './FaqItem';
 import type { ComponentProps } from 'react';
 
 interface Props extends ComponentProps<'section'> {
-  faqsData: FaqListResponse | null;
+  faqData: FaqListResponse;
   tabType: TabType;
 }
 
-const FaqSection = ({ faqsData, tabType, className }: Props) => {
-  const { items: faqs = [], pageInfo } = faqsData ?? {};
+const FaqSection = ({ faqData, tabType, className }: Props) => {
+  const { items, pageInfo } = faqData;
   const hideSubCategory = tabType === 'CONSULT';
   const totalPages = Math.ceil(pageInfo?.totalRecord ?? 1 / ITEMS_PER_PAGE);
 
   return (
     <section className={classNames('border-t-2 border-midnight-900', className)}>
-      {faqs?.length > 0 ? (
+      {items.length > 0 ? (
         <ul>
-          {faqs.map((faq) => (
+          {items.map((faq) => (
             <FaqItem key={faq.id} hideSubCategory={hideSubCategory} {...faq} />
           ))}
         </ul>

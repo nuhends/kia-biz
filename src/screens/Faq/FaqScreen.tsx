@@ -4,7 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import IconClear from '@/public/svgs/ic_clear.svg';
 import IconInit from '@/public/svgs/ic_init.svg';
 import IconSearch from '@/public/svgs/ic_search.svg';
-import { faqApi } from '@/src/api';
+import {
+  FaqCategoryID,
+  FaqListResponse,
+  getFaqCategories,
+  getFaqs,
+  TabType,
+  TabTypeSchema,
+} from '@/src/api/faq';
 import ContentTitle from '@/src/components/Layout/ContentTitle';
 import ProcessInfoSection from '@/src/components/ProcessSection/ProcessInfoSection';
 import { PROCESS_INFO } from '@/src/constants/contents';
@@ -28,15 +35,14 @@ import type { FaqCategory } from '@/src/api/faq/schema';
  */
 export interface FaqScreenProps {
   categories: FaqCategory[];
+  faqData: FaqListResponse;
   initialTab: string;
 }
 
-const FaqScreen: FC<FaqScreenProps> = ({ categories, initialTab }) => {
+const FaqScreen: FC<FaqScreenProps> = ({ categories, faqData, initialTab }) => {
   // 상태 관리
-  const [activeTab, setActiveTab] = useState<faqApi.TabType>('CONSULT');
-  const [selectedCategoryID, setSelectedCategoryID] = useState<faqApi.FaqCategoryID | null>(null);
-  const [faqs, setFaqs] = useState<faqApi.Faq[]>([]);
-  const [faqsData, setFaqsData] = useState<faqApi.FaqListResponse | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>('CONSULT');
+  const [selectedCategoryID, setSelectedCategoryID] = useState<FaqCategoryID | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -51,18 +57,18 @@ const FaqScreen: FC<FaqScreenProps> = ({ categories, initialTab }) => {
       try {
         setLoading(true);
         const [categoriesResult, faqsResult] = await Promise.all([
-          faqApi.getFaqCategories(activeTab),
-          faqApi.getFaqs(
-            activeTab,
-            selectedCategoryID || undefined,
-            isSearching ? searchQuery : undefined,
-            ITEMS_PER_PAGE,
-            currentPage * ITEMS_PER_PAGE,
-          ),
+          getFaqCategories(activeTab),
+          getFaqs({
+            tab: activeTab,
+            categoryID: selectedCategoryID || undefined,
+            question: isSearching ? searchQuery : undefined,
+            limit: ITEMS_PER_PAGE,
+            offset: currentPage * ITEMS_PER_PAGE,
+          }),
         ]);
-        setFaqsData(faqsResult);
+        // setFaqsData(faqsResult);
         // setCategories(categoriesResult);
-        setFaqs(faqsResult.items);
+        // setFaqs(faqsResult.items);
         setTotalRecord(faqsResult.pageInfo.totalRecord);
       } catch (err) {
         setError('데이터를 불러오는데 실패했습니다.');
@@ -76,10 +82,10 @@ const FaqScreen: FC<FaqScreenProps> = ({ categories, initialTab }) => {
   }, [activeTab, selectedCategoryID, currentPage, isSearching]);
 
   // 이벤트 핸들러
-  const handleTabChange = (tab: faqApi.TabType) => {
+  const handleTabChange = (tab: TabType) => {
     // Zod 스키마를 사용한 타입 검증
     try {
-      const validatedTab = faqApi.TabTypeSchema.parse(tab);
+      const validatedTab = TabTypeSchema.parse(tab);
       setActiveTab(validatedTab);
       setSelectedCategoryID(null); // 탭 변경 시 선택된 카테고리 초기화
       setCurrentPage(0); // 페이지 초기화
@@ -92,7 +98,7 @@ const FaqScreen: FC<FaqScreenProps> = ({ categories, initialTab }) => {
     }
   };
 
-  const handleCategorySelect = (categoryID: faqApi.FaqCategoryID | null) => {
+  const handleCategorySelect = (categoryID: FaqCategoryID | null) => {
     setSelectedCategoryID(categoryID);
     setCurrentPage(0); // 카테고리 변경 시 페이지 초기화
     // 서브탭 변경 시에는 검색 상태와 검색어를 유지
@@ -213,7 +219,7 @@ const FaqScreen: FC<FaqScreenProps> = ({ categories, initialTab }) => {
       {/* 카테고리 필터 */}
       <FilterList categories={categories} className="mt-(--px-md)" />
       {/* FAQ 목록 */}
-      <FaqSection faqsData={faqsData} tabType={activeTab} />
+      <FaqSection faqData={faqData} tabType={activeTab} />
       {/* 서비스 문의 */}
       <InquiryInfoSection />
       {/* 이용 프로세스 안내 */}
