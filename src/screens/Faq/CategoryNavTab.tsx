@@ -31,6 +31,7 @@ const NavTabItem: FC<TabItemProps> = ({ active, category, href }) => (
       { 'bg-midnight-900! text-white border-midnight-900 font-bold': active },
     )}
     href={href}
+    scroll={false}
   >
     {category.label}
   </Link>
@@ -42,7 +43,7 @@ interface CategoryNavTabProps {
 
 const CategoryNavTab: FC<CategoryNavTabProps> = ({ initialTab }) => {
   const { pathname, query } = useRouter();
-  const { _, ...excludedQuery } = query;
+  const { page, ...excludedQuery } = query;
   const currentTab = query.tab || initialTab;
 
   return (
