@@ -43,7 +43,7 @@ interface CategoryNavTabProps {
 
 const CategoryNavTab: FC<CategoryNavTabProps> = ({ initialTab }) => {
   const { pathname, query } = useRouter();
-  const { page, ...excludedQuery } = query;
+  const { page, categoryID, ...excludedQuery } = query;
   const currentTab = query.tab || initialTab;
 
   return (
