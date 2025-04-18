@@ -1,8 +1,9 @@
 import classNames from 'classnames';
-import { FC, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import CloseIcon from '@/public/svgs/ic_close.svg';
+
+import type { FC, ReactNode } from 'react';
 
 export interface DialogModalProps {
   children: ReactNode;
@@ -15,8 +16,6 @@ const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children })
   if (!isOpen) return null;
 
   return createPortal(
-    // TODO: z-index 상수 관리
-    // TODO: 애니메이션 처리 추가
     <div
       className={classNames(
         'min-w-[320px] max-w-[calc(100%-var(--side-padding)*2)] max-h-[calc(100%-var(--side-padding)*2)]',
@@ -24,10 +23,11 @@ const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children })
       )}
       role="dialog"
     >
-      {/* dimmed layer */}
-      <div className="fixed inset-[0] bg-black/40" />
-      {/* content */}
-      <div className="relative flex flex-col w-full max-w-[960px] h-full bg-white">
+      <div id="dialogBackdrop" className="fixed inset-[0] bg-black/40" />
+      <div
+        id="dialogModalContent"
+        className={'relative flex flex-col w-full max-w-[960px] h-full bg-white'}
+      >
         <div className="h-full px-[20px] overflow-y-scroll xl:px-[40px]">
           {/* 다이어로그 header */}
           <div className="flex justify-between items-center h-[62px] pt-[4px] border-b-[2px] border-midnight-900">

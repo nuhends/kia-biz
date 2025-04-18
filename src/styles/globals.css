@@ -2,6 +2,7 @@
 @import './Header.css';
 @import './TermsFrame.css';
 @import './indicator.css';
+@import './modal.css';
 
 @theme {
   --color-mint-900: #70d7bf;
@@ -449,14 +450,5 @@
       --font-lg: 16px;
       --line-height: 24px;
     }
-  }
-}
-
-@keyframes dialog-backdrop-show {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
