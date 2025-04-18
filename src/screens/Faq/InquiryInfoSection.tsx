@@ -24,7 +24,7 @@ const InquiryInfoSection: FC<ComponentProps<'section'>> = () => {
         <LinkButton
           aria-label="서비스 제안서 다운로드"
           download
-          href="/downloads/service-proposal.pdf"
+          href={URLS.SERVICE_PROPOSAL}
           type="tertiary"
           role="listitem"
           size="xxlg"

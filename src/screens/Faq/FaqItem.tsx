@@ -39,7 +39,7 @@ const FaqItem: FC<Props> = ({
             <span
               className={classNames(
                 "flex items-center before:content-[''] before:mx-[2px] before:w-4 before:h-4 before:bg-[url('/svgs/ic_arrow.svg')] before:bg-no-repeat before:bg-center before:rotate-[-90deg] before:opacity-30",
-                'lg:before:hidden lg:px-(--faq-list-a-padding-h) lg:w-[6em] lg:box-content text-(length:--faq-list-a-size)',
+                'lg:before:hidden lg:box-content lg:justify-center lg:w-[6em] lg:px-(--faq-list-a-padding-h) lg:text-(length:--faq-list-a-size)',
               )}
             >
               {subCategoryName}

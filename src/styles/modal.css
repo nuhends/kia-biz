@@ -1,0 +1,44 @@
+@keyframes dialog-backdrop-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dialog-backdrop-close {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes dialog-show {
+  from {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes dialog-close {
+  from {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+}
+
+#dialogModalContent {
+  animation: dialog-show 0.4s cubic-bezier(0.4, 2, 0.6, 1);
+}
+
+#dialogBackdrop {
+  animation: dialog-backdrop-show 0.4s;
+}
