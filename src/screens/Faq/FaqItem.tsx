@@ -22,7 +22,7 @@ const FaqItem: FC<Props> = ({
         aria-expanded={isExpanded}
         className={classNames(
           'flex flex-wrap flex-col items-start justify-between relative w-full py-(--faq-list-a-padding-v) pr-[calc(var(--px-xlg)+1.6em)] text-(length:--faq-list-a-size) leading-sm',
-          "after:content-[''] after:absolute after:top-[50%] after:mt-[calc(var(--ic-md)/2*-1)] after:right-[calc((var(--px-xlg)-var(--ic-md))/2)] after:w-(--ic-md) after:h-(--ic-md) after:bg-[url('/svgs/ic_arrow.svg')] after:bg-no-repeat after:bg-center",
+          "after:content-[''] after:absolute after:top-[50%] after:mt-[calc(var(--ic-md)/2*-1)] after:right-[calc((var(--px-xlg)-var(--ic-md))/2)] after:w-(--ic-md) after:h-(--ic-md) after:bg-[url('/svgs/ic_arrow.svg')] after:bg-no-repeat after:bg-center after:transition-transform duration-[400ms] transition-(--cubic-bezier-primary)",
           {
             'after:rotate-180': isExpanded,
             'bg-gray-10': isExpanded,
@@ -54,13 +54,18 @@ const FaqItem: FC<Props> = ({
       </button>
       <div
         className={classNames(
-          'text-gray-600 border-t-[1px] border-gray-100 text-[1rem]! leading-lg overflow-y-scroll p-(--faq-list-q-padding) [&>*]:all-revert',
+          'text-gray-600 border-t-[1px] border-gray-100 text-[1rem]! leading-lg overflow-y-scroll hide-scrollbar transition-[height] duration-[600ms] transition-(--cubic-bezier-primary)',
           {
-            hidden: !isExpanded,
+            'h-[0px]': !isExpanded,
+            'h-[300px]': isExpanded,
           },
         )}
-        dangerouslySetInnerHTML={{ __html: answer }}
-      />
+      >
+        <div
+          className="p-(--faq-list-q-padding) [&>*]:all-revert"
+          dangerouslySetInnerHTML={{ __html: answer }}
+        />
+      </div>
     </li>
   );
 };
