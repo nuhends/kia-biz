@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './Header.css';
 @import './TermsFrame.css';
+@import './indicator.css';
 
 @theme {
   --color-mint-900: #70d7bf;

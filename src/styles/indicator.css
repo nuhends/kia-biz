@@ -1,0 +1,64 @@
+@keyframes indicator {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes indicator-clipping {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+  75% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+  }
+}
+
+.loading-indicator {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading-indicator > span {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  animation: indicator 0.8s linear infinite;
+}
+.loading-indicator > span:before {
+  content: '';
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 6px solid var(--color-gray-200);
+  animation: indicator-clipping 1.6s linear infinite alternate;
+}
+
+@media (max-width: 743px) {
+  .loading-indicator > span {
+    width: 32px;
+    height: 32px;
+  }
+  .loading-indicator > span:before {
+    border-width: 4px;
+  }
+}
+@media (min-width: 744px) and (max-width: 1439px) {
+  .loading-indicator > span {
+    width: 40px;
+    height: 40px;
+  }
+  .loading-indicator > span:before {
+    border-width: 5px;
+  }
+}
