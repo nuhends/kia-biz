@@ -3,16 +3,17 @@ import type { ComponentProps, FC } from 'react';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
+import { useFaqContext } from './contexts/FaqContext';
 import FilterItem from './FilterItem';
 
 interface Props extends ComponentProps<'ul'> {
   categories: FaqCategory[];
-  questionValue: string;
 }
 
-const FilterList: FC<Props> = ({ categories, className, questionValue }) => {
+const FilterList: FC<Props> = ({ categories, className }) => {
   const { pathname, query } = useRouter();
   const { page, categoryID, question, ...excludedQuery } = query;
+  const { questionValue } = useFaqContext();
   const refinedCategories = [{ categoryID: '', name: '전체' }, ...categories];
   const currentCategory = query?.categoryID || refinedCategories[0].categoryID;
 

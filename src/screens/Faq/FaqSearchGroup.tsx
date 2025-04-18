@@ -1,22 +1,23 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
+import { ChangeEvent, FC, KeyboardEvent } from 'react';
 
 import IconClear from '@/public/svgs/ic_clear.svg';
 import IconInit from '@/public/svgs/ic_init.svg';
 import IconSearch from '@/public/svgs/ic_search.svg';
 
+import { useFaqContext } from './contexts/FaqContext';
+
 const QUESTION_MIN_LENGTH = 2;
 
 interface Props {
   totalRecord: number;
-  questionValue: string;
-  setQuestionValue: Dispatch<SetStateAction<string>>;
 }
 
-const FaqSearchGroup: FC<Props> = ({ totalRecord, questionValue, setQuestionValue }) => {
-  const { pathname, push, replace, query } = useRouter();
+const FaqSearchGroup: FC<Props> = ({ totalRecord }) => {
+  const { pathname, push, query } = useRouter();
   const { page, question, ...excludedQuery } = query;
+  const { questionValue, setQuestionValue, resetQuestionValue } = useFaqContext();
 
   const handleSearch = () => {
     if (questionValue.trim().length < QUESTION_MIN_LENGTH) {
@@ -24,24 +25,16 @@ const FaqSearchGroup: FC<Props> = ({ totalRecord, questionValue, setQuestionValu
       return;
     }
 
-    replace({
+    push({
       pathname,
       query: {
         ...excludedQuery,
         question: questionValue,
       },
     });
-
-    // TODO: 검생 상태관리 할 지 고민해보기
-    // 검색어가 변경되었거나 검색 상태가 false인 경우에만 검색 실행
-    // if (!isSearching || searchQuery !== prevSearchQuery.current) {
-    //   setIsSearching(true);
-    //   setCurrentPage(0); // 검색 시 페이지 초기화
-    //   prevSearchQuery.current = searchQuery; // 현재 검색어 저장
-    // }
   };
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
@@ -52,7 +45,7 @@ const FaqSearchGroup: FC<Props> = ({ totalRecord, questionValue, setQuestionValu
   };
 
   const handleResetSearch = () => {
-    setQuestionValue('');
+    resetQuestionValue();
     push({
       pathname,
       query: { ...excludedQuery },
