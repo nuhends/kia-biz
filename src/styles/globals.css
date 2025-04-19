@@ -3,6 +3,7 @@
 @import './TermsFrame.css';
 @import './indicator.css';
 @import './modal.css';
+@import './mixins.css';
 
 @theme {
   --color-mint-900: #70d7bf;
