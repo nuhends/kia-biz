@@ -12,6 +12,15 @@ export const META = {
   FAQ: {
     TITLE: '서비스 도입 FAQ | 기아 비즈(Kia Biz) - 친환경 모빌리티 서비스',
   },
+  NEWS: {
+    TITLE: '새소식 | 기아 비즈(Kia Biz) - 친환경 모빌리티 서비스',
+  },
+  COUNSEL: {
+    TITLE: '상담문의 | 기아 비즈(Kia Biz) - 친환경 모빌리티 서비스',
+  },
+  GUIDE: {
+    TITLE: '서비스 소개 | 기아 비즈(Kia Biz) - 친환경 모빌리티 서비스',
+  },
 };
 
 export const URLS = {

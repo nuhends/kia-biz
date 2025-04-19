@@ -15,7 +15,7 @@ const MENUS = [
   },
   {
     label: '자주 묻는 질문',
-    href: '/FAQ',
+    href: '/faq',
   },
   {
     label: '새소식',

@@ -8,10 +8,12 @@ import { getTerms, Term } from '@/src/api/terms';
 import Footer from '@/src/components/Footer/Footer';
 import Header from '@/src/components/Header';
 import Layout from '@/src/components/Layout/Layout';
-import { NextPageWithLayout } from '@/src/components/Layout/types';
 import { META } from '@/src/constants/meta';
 import { FAQ_TAB_LIST } from '@/src/screens/Faq/CategoryNavTab';
-import FaqScreen, { FaqScreenProps } from '@/src/screens/Faq/FaqScreen';
+import FaqScreen from '@/src/screens/Faq/FaqScreen';
+
+import type { NextPageWithLayout } from '@/src/components/Layout/types';
+import type { FaqScreenProps } from '@/src/screens/Faq/FaqScreen';
 
 interface Props extends FaqScreenProps {
   terms: Term[];
