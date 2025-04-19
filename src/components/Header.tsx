@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import LogoKiaBiz from '@/public/svgs/logo_kiabiz.svg';
 import LogoKiaBizSmall from '@/public/svgs/logo_kiabiz_sm.svg';
+import { useBodyScrollLock } from '@/src/hooks/useBodyScrollLock';
 import useTopIntersectionObserver from '@/src/hooks/useTopIntersectionObserver';
 
 import type { FC } from 'react';
@@ -30,6 +31,22 @@ const MENUS = [
 const Header: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { lock, unlock } = useBodyScrollLock();
+
+  const handleClickNavItem = () => {
+    setIsMenuOpen(false);
+    unlock();
+  };
+
+  const handleClickMenu = () => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+      unlock();
+    } else {
+      setIsMenuOpen(true);
+      lock();
+    }
+  };
 
   useTopIntersectionObserver({
     callback: ([entry]) => setIsScrolled(!entry.isIntersecting),
@@ -71,13 +88,11 @@ const Header: FC = () => {
         >
           <ul className="flex lg:mt-[0]">
             {MENUS.map(({ label, href }) => (
-              <li key={label} className={classNames('', 'lg:mx-[16px]')}>
+              <li key={label} className={classNames('lg:mx-[16px]')}>
                 <Link
-                  className={classNames(
-                    'block',
-                    'lg:px-[4px] lg:text-[18px] lg:font-bold lg:leading-(--header-height) lg:text-black',
-                  )}
+                  className="block lg:px-[4px] lg:text-[18px] lg:font-bold lg:leading-(--header-height) lg:text-black"
                   href={href}
+                  onClick={handleClickNavItem}
                 >
                   {label}
                 </Link>
@@ -90,7 +105,7 @@ const Header: FC = () => {
           className={classNames('w-[40px] h-[40px] border-[10px] border-transparent', 'lg:hidden!')}
           type="button"
           id="menu"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
+          onClick={handleClickMenu}
         >
           <span className="blind">메뉴 {isMenuOpen ? '닫기' : '열기'}</span>
         </button>
