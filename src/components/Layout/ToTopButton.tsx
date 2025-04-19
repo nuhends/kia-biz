@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import IcTop from '@/public/svgs/ic_top.svg';
 import useTopIntersectionObserver from '@/src/hooks/useTopIntersectionObserver';
@@ -8,6 +8,8 @@ import type { FC } from 'react';
 
 const ToTopButton: FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const isMouseDown = useRef(false);
 
   useTopIntersectionObserver({
     callback: ([entry]) => setIsScrolled(!entry.isIntersecting),
@@ -16,6 +18,20 @@ const ToTopButton: FC = () => {
 
   const handleClickToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleTouchStart = () => {
+    if (!buttonRef.current) return;
+
+    isMouseDown.current = true;
+    buttonRef.current.children[0].classList.add('translate-y-[4px]');
+  };
+
+  const handleTouchEnd = () => {
+    if (!buttonRef.current) return;
+
+    buttonRef.current.children[0].classList.remove('translate-y-[4px]');
+    isMouseDown.current = false;
   };
 
   return (
@@ -38,12 +54,19 @@ const ToTopButton: FC = () => {
               'w-[0]! h-[0]! opacity-0!': !isScrolled,
             },
           )}
+          ref={buttonRef}
           onClick={handleClickToTop}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onPointerDown={handleTouchStart}
+          onPointerUp={handleTouchEnd}
+          onPointerLeave={handleTouchEnd}
         >
           <span
+            ref={buttonRef}
             className={classNames(
-              'w-[20px] h-[20px] [&>svg]:w-full h-full] md:w-[24px] md:h-[24px]',
-              'lg:w-[28px] lg:h-[28px]',
+              'w-[20px] h-[20px] [&>svg]:w-full h-full] transition-transform duration-400 transition-(--cubic-bezier-primary)',
+              'md:w-[24px] md:h-[24px] lg:w-[28px] lg:h-[28px]',
             )}
           >
             <IcTop />
