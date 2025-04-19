@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
 import KiaLogo from '@/public/svgs/logo_kia.svg';
 import { ADDRESS_INFO, URLS } from '@/src/constants/meta';
@@ -8,8 +8,8 @@ import TermsModal from '@/src/screens/Faq/TermsModal';
 
 import Address from './Address';
 
+import type { FC } from 'react';
 import type { Term } from '@/src/api/terms';
-import { useBodyScrollLock } from '@/src/hooks/useBodyScrollLock';
 
 interface Props {
   terms: Term[];
@@ -17,16 +17,13 @@ interface Props {
 
 const Footer: FC<Props> = ({ terms }) => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
-  const { lock, unlock } = useBodyScrollLock();
 
   const handleOpenTerms = () => {
     setIsTermsOpen(true);
-    lock();
   };
 
   const handleCloseTerms = () => {
     setIsTermsOpen(false);
-    unlock();
   };
 
   return (
@@ -71,7 +68,6 @@ const Footer: FC<Props> = ({ terms }) => {
           </div>
         </div>
       </footer>
-      {/* TODO: terms 데이터 실패했을 경우 처리 필요 */}
       {terms && <TermsModal isOpen={isTermsOpen} onClose={handleCloseTerms} terms={terms} />}
     </>
   );
