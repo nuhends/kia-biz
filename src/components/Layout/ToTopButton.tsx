@@ -14,6 +14,10 @@ const ToTopButton: FC = () => {
     options: { threshold: 0 },
   });
 
+  const handleClickToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className={classNames('sticky z-99 bottom-[0] left-[0] w-full pointer-events-none')}>
       <div
@@ -34,6 +38,7 @@ const ToTopButton: FC = () => {
               'w-[0]! h-[0]! opacity-0!': !isScrolled,
             },
           )}
+          onClick={handleClickToTop}
         >
           <span
             className={classNames(
