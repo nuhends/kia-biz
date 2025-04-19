@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
 import { getFaqs } from '@/src/api/faq/getFaqs';
+import { useNetworkError } from '@/src/context/NetworkErrorContext';
 
 import { useFaqContext } from './contexts/FaqContext';
 
@@ -9,6 +10,7 @@ import type { FC } from 'react';
 
 const LoadMoreButton: FC = () => {
   const { query } = useRouter();
+  const { openNetworkErrorModal } = useNetworkError();
   const { faqData, isLoading, setFaqData, setIsLoading } = useFaqContext();
   const { tab, categoryID, question } = query;
 
@@ -30,6 +32,7 @@ const LoadMoreButton: FC = () => {
       }));
     } catch (error) {
       console.error('추가 FAQ 데이터 로딩 실패:', error);
+      openNetworkErrorModal();
     } finally {
       setIsLoading(false);
     }
