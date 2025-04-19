@@ -10,8 +10,8 @@ import FaqSearchGroup from './FaqSearchGroup';
 import FilterList from './FilterList';
 import InquiryInfoSection from './InquiryInfoSection';
 
-import type { FaqListResponse } from '@/src/api/faq';
 import type { FC } from 'react';
+import type { FaqListResponse } from '@/src/api/faq';
 import type { FaqCategory } from '@/src/api/faq/schema';
 
 export interface FaqScreenProps {

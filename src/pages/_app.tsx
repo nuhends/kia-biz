@@ -2,8 +2,10 @@ import '@/src/styles/globals.css';
 
 import Head from 'next/head';
 
+import NetworkErrorModal from '@/src/components/DialogModal/NetworkErrorModal';
 import Layout from '@/src/components/Layout/Layout';
 import { META } from '@/src/constants/meta';
+import { NetworkErrorProvider } from '@/src/context/NetworkErrorContext';
 
 import type { NextPageWithLayout } from '@/src/components/Layout/types';
 import type { AppProps } from 'next/app';
@@ -35,8 +37,11 @@ const App = ({ Component, pageProps }: AppPropsWithLayout<Props>) => {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
-      <span aria-hidden id="top-anchor" />
-      {getLayout(<Component {...pageProps} />)}
+      <NetworkErrorProvider>
+        <span aria-hidden id="top-anchor" />
+        {getLayout(<Component {...pageProps} />)}
+        <NetworkErrorModal />
+      </NetworkErrorProvider>
     </>
   );
 };

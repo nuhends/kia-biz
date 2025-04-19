@@ -2,7 +2,9 @@ import { z } from 'zod';
 
 import { getApiUrl } from '@/src/utils/api';
 
-import { FaqCategoryID, FaqListResponse, FaqListResponseSchema, TabType } from './schema';
+import { FaqListResponseSchema } from './schema';
+
+import type { FaqListResponse } from './schema';
 
 /**
  * 탭별 FAQ 목록 조회

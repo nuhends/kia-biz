@@ -1,18 +1,30 @@
 import classNames from 'classnames';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import CloseIcon from '@/public/svgs/ic_close.svg';
+import { useBodyScrollLock } from '@/src/hooks/useBodyScrollLock';
 
-import type { FC, ReactNode } from 'react';
+import type { ComponentProps, FC, ReactNode } from 'react';
 
-export interface DialogModalProps {
+export interface DialogModalProps extends ComponentProps<'div'> {
   children: ReactNode;
   isOpen: boolean;
-  title: string;
+  title?: string;
   onClose: () => void;
 }
 
-const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children }) => {
+const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children, className }) => {
+  const { lock, unlock } = useBodyScrollLock();
+
+  useEffect(() => {
+    if (isOpen) {
+      lock();
+    } else {
+      unlock();
+    }
+  }, [isOpen, lock, unlock]);
+
   if (!isOpen) return null;
 
   return createPortal(
@@ -20,6 +32,7 @@ const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children })
       className={classNames(
         'min-w-[320px] max-w-[calc(100%-var(--side-padding)*2)] max-h-[calc(100%-var(--side-padding)*2)]',
         'fixed inset-[0] z-105 flex items-center justify-center m-auto',
+        className,
       )}
       role="dialog"
     >
@@ -30,8 +43,12 @@ const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children })
       >
         <div className="h-full px-[20px] overflow-y-scroll xl:px-[40px]">
           {/* 다이어로그 header */}
-          <div className="flex justify-between items-center h-[62px] pt-[4px] border-b-[2px] border-midnight-900">
-            <h4 className="text-[16px] font-bold">{title}</h4>
+          <div
+            className={classNames('flex justify-end items-center h-[62px] pt-[4px]', {
+              'border-b-[2px] border-midnight-900 justify-between!': title,
+            })}
+          >
+            {title && <h4 className="text-[16px] font-bold">{title}</h4>}
             <button
               aria-label="dialog 닫기"
               className={classNames('p-[16px] [&>svg]:w-[24px] [&>svg]:h-[24px] mr-[-16px]')}
