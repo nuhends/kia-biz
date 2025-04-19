@@ -47,17 +47,20 @@ const FaqItem: FC<Props> = ({
           )}
         </div>
         <em
-          className={classNames('mt-[4px] font-bold text-left', 'lg:pl-(--faq-list-a-padding-h)')}
+          className={classNames(
+            'mt-[4px] font-bold text-left',
+            'lg:mt-auto lg:pl-(--faq-list-a-padding-h)',
+          )}
         >
           {question}
         </em>
       </button>
       <div
         className={classNames(
-          'text-gray-600 border-t-[1px] border-gray-100 text-[1rem]! leading-lg overflow-y-scroll hide-scrollbar transition-[height] duration-[600ms] transition-(--cubic-bezier-primary)',
+          'text-gray-600 border-t-[1px] border-gray-100 text-[1rem]! leading-lg overflow-y-scroll hide-scrollbar transition-[height min-height] duration-[600ms] transition-(--cubic-bezier-primary)',
           {
             'h-[0px]': !isExpanded,
-            'h-[300px]': isExpanded,
+            'h-[250px]': isExpanded,
           },
         )}
       >
