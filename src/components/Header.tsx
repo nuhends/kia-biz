@@ -1,9 +1,12 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
 import LogoKiaBiz from '@/public/svgs/logo_kiabiz.svg';
 import LogoKiaBizSmall from '@/public/svgs/logo_kiabiz_sm.svg';
+import useTopIntersectionObserver from '@/src/hooks/useTopIntersectionObserver';
+
+import type { FC } from 'react';
 
 const MENUS = [
   {
@@ -26,9 +29,20 @@ const MENUS = [
 
 const Header: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useTopIntersectionObserver({
+    callback: ([entry]) => setIsScrolled(!entry.isIntersecting),
+    options: { threshold: 0 },
+  });
 
   return (
-    <header className="sticky z-100 top-[0] h-(--header-height) px-(--side-padding) bg-white">
+    <header
+      className={classNames(
+        'sticky z-100 top-[0] h-(--header-height) px-(--side-padding) bg-white',
+        { 'shadow-[0_4px_32px_0_rgba(0,0,0,0.08)]!': isScrolled },
+      )}
+    >
       <div
         className={classNames(
           'flex flex-wrap items-center justify-between max-w-(--max-width) h-(--header-height) mx-auto',
