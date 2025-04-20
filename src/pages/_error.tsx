@@ -65,7 +65,7 @@ ErrorPage.getInitialProps = async ({ res, err }: NextPageContext) => {
   let terms: Term[] = [];
 
   try {
-    terms = await getTerms('JOIN_SERVICE_USE');
+    terms = await getTerms({ termsClassID: 'JOIN_SERVICE_USE' });
   } catch (error) {
     console.error('약관 정보를 가져오는데 실패했습니다:', error);
     // 에러가 발생해도 나머지 프로세스는 진행

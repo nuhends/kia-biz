@@ -53,8 +53,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const initialQuestionQuery = String(query?.question || '');
 
   const [categories, terms, faqData] = await Promise.all([
-    getFaqCategories(initialTab),
-    getTerms('JOIN_SERVICE_USE'),
+    getFaqCategories({ tab: initialTab }),
+    getTerms({ termsClassID: 'JOIN_SERVICE_USE' }),
     getFaqs({
       tab: initialTab,
       ...(categoryID && { categoryID }),

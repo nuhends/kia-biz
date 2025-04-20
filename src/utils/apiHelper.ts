@@ -8,13 +8,34 @@
  * @returns API 기본 URL
  */
 export const getApiBaseUrl = (): string => {
-  // 서버 사이드에서 API를 호출할 때는 절대 U1RL이 필요합니다.
+  // 서버 사이드에서 API를 호출할 때는 절대 URL이 필요합니다.
+  console.log('typeof window :: ', typeof window);
   if (typeof window === 'undefined') {
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
   }
 
   // 클라이언트 사이드에서는 상대 경로를 사용합니다.
   return '';
+};
+
+/**
+ * 객체 형태의 파라미터를 URLSearchParams로 변환합니다.
+ * 값이 undefined인 속성은 제외됩니다.
+ * @param params 파라미터 객체
+ * @returns URLSearchParams 객체
+ */
+export const createQueryParams = (
+  params: Record<string, string | number | boolean | undefined>,
+): URLSearchParams => {
+  const queryParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined) {
+      queryParams.append(key, String(value));
+    }
+  });
+
+  return queryParams;
 };
 
 /**

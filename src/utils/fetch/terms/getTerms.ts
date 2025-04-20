@@ -1,15 +1,17 @@
 import { z } from 'zod';
 
-import { getApiUrl } from '@/src/utils/apiHelper';
+import { createQueryParams, getApiUrl } from '@/src/utils/apiHelper';
 
-import { Term, TermSchema, TermsClassID, TermsClassIDSchema } from './schema';
+import { TermSchema, TermsClassIDSchema } from './schema';
+
+import type { Term, TermsClassID } from './schema';
 
 /**
  * 약관 정보 조회
- * @param termsClassID 약관 클래스 ID (JOIN_SERVICE_USE)
+ * @param params.termsClassID 약관 클래스 ID (JOIN_SERVICE_USE)
  * @returns 약관 정보 목록
  */
-export async function getTerms(termsClassID: TermsClassID): Promise<Term[]> {
+export async function getTerms({ termsClassID }: { termsClassID: TermsClassID }): Promise<Term[]> {
   try {
     // termsClassID 값 검증
     const validatedTermsClassID = TermsClassIDSchema.safeParse(termsClassID);
@@ -17,8 +19,10 @@ export async function getTerms(termsClassID: TermsClassID): Promise<Term[]> {
       throw new Error('유효하지 않은 약관 클래스 ID입니다.');
     }
 
-    const queryParams = new URLSearchParams();
-    queryParams.append('termsClassID', validatedTermsClassID.data);
+    // 유틸리티 함수를 사용하여 쿼리 파라미터 생성
+    const queryParams = createQueryParams({
+      termsClassID: validatedTermsClassID.data,
+    });
 
     // 유틸리티 함수를 사용하여 API URL 생성
     const apiUrl = getApiUrl('/api/terms', queryParams);

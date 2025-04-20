@@ -41,7 +41,7 @@ CounselPage.getLayout = (page) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const terms = await getTerms('JOIN_SERVICE_USE');
+  const terms = await getTerms({ termsClassID: 'JOIN_SERVICE_USE' });
 
   return {
     props: {

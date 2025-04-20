@@ -178,7 +178,7 @@ try {
 import { faqApi } from '../../api';
 
 // 카테고리 조회
-const consultCategories = await faqApi.getFaqCategories('CONSULT');
+const consultCategories = await faqApi.getFaqCategories({ tab: 'CONSULT' });
 
 // FAQ 목록 조회
 const faqs = await faqApi.getFaqs(

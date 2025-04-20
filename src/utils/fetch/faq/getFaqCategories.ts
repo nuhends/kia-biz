@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
 import { FaqCategoriesResponseSchema, FaqCategory, TabType } from './schema';
-import { getApiUrl } from '@/src/utils/apiHelper';
+import { createQueryParams, getApiUrl } from '@/src/utils/apiHelper';
 
 /**
  * 탭별 카테고리 목록 조회
- * @param tab 탭 유형
+ * @param params.tab 탭 유형
  * @returns 카테고리 목록
  */
-export async function getFaqCategories(tab: string): Promise<FaqCategory[]> {
+export async function getFaqCategories({ tab }: { tab: string }): Promise<FaqCategory[]> {
   try {
-    const queryParams = new URLSearchParams();
-    queryParams.append('tab', tab);
+    // 유틸리티 함수를 사용하여 쿼리 파라미터 생성
+    const queryParams = createQueryParams({ tab });
 
     // 유틸리티 함수를 사용하여 API URL 생성
     const apiUrl = getApiUrl('/api/faq/categories', queryParams);
