@@ -8,6 +8,7 @@ import { useBodyScrollLock } from '@/src/hooks/useBodyScrollLock';
 import useTopIntersectionObserver from '@/src/hooks/useTopIntersectionObserver';
 
 import type { FC } from 'react';
+import { Z_INDEX_LEVEL } from '../constants/styles';
 
 const MENUS = [
   {
@@ -56,7 +57,7 @@ const Header: FC = () => {
   return (
     <header
       className={classNames(
-        'sticky z-100 top-[0] h-(--header-height) px-(--side-padding) bg-white',
+        `sticky ${Z_INDEX_LEVEL.TOP_BUTTON} top-[0] h-(--header-height) px-(--side-padding) bg-white`,
         { 'shadow-[0_4px_32px_0_rgba(0,0,0,0.08)]!': isScrolled },
       )}
     >

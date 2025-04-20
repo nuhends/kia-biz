@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useRef, useState } from 'react';
 
 import IcTop from '@/public/svgs/ic_top.svg';
+import { Z_INDEX_LEVEL } from '@/src/constants/styles';
 import useTopIntersectionObserver from '@/src/hooks/useTopIntersectionObserver';
 
 import type { FC } from 'react';
@@ -35,7 +36,11 @@ const ToTopButton: FC = () => {
   };
 
   return (
-    <div className={classNames('sticky z-99 bottom-[0] left-[0] w-full pointer-events-none')}>
+    <div
+      className={classNames(
+        `sticky ${Z_INDEX_LEVEL.TOP_BUTTON} bottom-[0] left-[0] w-full pointer-events-none`,
+      )}
+    >
       <div
         className={classNames(
           'flex flex-col items-center absolute bottom-[24px] right-[16px] w-[40px] h-[40px]',

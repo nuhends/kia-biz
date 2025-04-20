@@ -1,16 +1,7 @@
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import type { FaqListResponse } from '@/src/utils/fetch/faq/schema';
-
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-
-import type { ReactNode } from 'react';
 
 interface FaqContextType {
   faqData: FaqListResponse;

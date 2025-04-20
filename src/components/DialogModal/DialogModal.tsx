@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import CloseIcon from '@/public/svgs/ic_close.svg';
+import { ROOT_DOM_ID, Z_INDEX_LEVEL } from '@/src/constants/styles';
 import { useBodyScrollLock } from '@/src/hooks/useBodyScrollLock';
 
 import type { ComponentProps, FC, ReactNode } from 'react';
@@ -30,8 +31,7 @@ const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children, c
   return createPortal(
     <div
       className={classNames(
-        'min-w-[320px] max-w-[calc(100%-var(--side-padding)*2)] max-h-[calc(100%-var(--side-padding)*2)]',
-        'fixed inset-[0] z-105 flex items-center justify-center m-auto',
+        `fixed inset-[0] ${Z_INDEX_LEVEL.DIALOG_MODAL} flex items-center justify-center m-auto min-w-[320px] max-w-[calc(100%-var(--side-padding)*2)] max-h-[calc(100%-var(--side-padding)*2)]`,
         className,
       )}
       role="dialog"
@@ -63,7 +63,7 @@ const DialogModal: FC<DialogModalProps> = ({ isOpen, onClose, title, children, c
         </div>
       </div>
     </div>,
-    document.querySelector('#__next') as HTMLElement,
+    document.querySelector(ROOT_DOM_ID) as HTMLElement,
   );
 };
 
