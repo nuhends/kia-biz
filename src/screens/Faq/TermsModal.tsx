@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 
-import { Term } from '@/src/api/terms';
+import { Term } from '@/src/utils/fetch/terms';
 import DialogModal, { DialogModalProps } from '@/src/components/DialogModal/DialogModal';
 import { formatDate } from '@/src/utils/date';
 

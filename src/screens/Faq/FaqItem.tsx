@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { ComponentProps, FC, useState } from 'react';
 
-import type { Faq } from '@/src/api/faq';
+import type { Faq } from '@/src/utils/fetch/faq';
 
 interface Props extends Omit<ComponentProps<'li'>, 'id'>, Faq {
   hideSubCategory?: boolean;

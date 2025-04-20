@@ -1,7 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-import { Faq, FaqCategoryIDSchema, FaqsResponse, TabTypeSchema } from '@/src/api/faq/schema';
+import {
+  Faq,
+  FaqCategoryIDSchema,
+  FaqsResponse,
+  TabTypeSchema,
+} from '@/src/utils/fetch/faq/schema';
 import { ITEMS_PER_PAGE } from '@/src/screens/Faq/constants';
 
 import type { NextApiRequest, NextApiResponse } from 'next';

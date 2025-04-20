@@ -1,7 +1,7 @@
 import type { NextPageContext } from 'next';
 import { match } from 'ts-pattern';
 
-import { getTerms } from '@/src/api/terms';
+import { getTerms } from '@/src/utils/fetch/terms';
 import Footer from '@/src/components/Footer/Footer';
 import Header from '@/src/components/Header';
 import Layout from '@/src/components/Layout/Layout';
@@ -11,7 +11,7 @@ import Content500 from '@/src/screens/Error/Content500';
 import ErrorScreen from '@/src/screens/Error/ErrorScreen';
 
 import type { ErrorProps } from '@/src/utils/error';
-import type { Term } from '@/src/api/terms/schema';
+import type { Term } from '@/src/utils/fetch/terms/schema';
 import type { NextPageWithLayout } from '@/src/components/Layout/types';
 import type { ErrorScreenProps } from '@/src/screens/Error/ErrorScreen';
 
@@ -65,7 +65,7 @@ ErrorPage.getInitialProps = async ({ res, err }: NextPageContext) => {
   let terms: Term[] = [];
 
   try {
-    terms = await getTerms('JOIN_SERVICE_USE');
+    terms = await getTerms({ termsClassID: 'JOIN_SERVICE_USE' });
   } catch (error) {
     console.error('약관 정보를 가져오는데 실패했습니다:', error);
     // 에러가 발생해도 나머지 프로세스는 진행

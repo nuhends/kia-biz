@@ -1,10 +1,10 @@
-import { getTerms } from '@/src/api/terms';
+import { getTerms } from '@/src/utils/fetch/terms';
 import Footer from '@/src/components/Footer/Footer';
 import Header from '@/src/components/Header';
 import Layout from '@/src/components/Layout/Layout';
 import HomeScreen from '@/src/screens/Home/HomeScreen';
 
-import type { Term } from '@/src/api/terms';
+import type { Term } from '@/src/utils/fetch/terms';
 import type { NextPageWithLayout } from '@/src/components/Layout/types';
 import type { GetServerSideProps } from 'next';
 
@@ -29,7 +29,7 @@ Home.getLayout = (page) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const terms = await getTerms('JOIN_SERVICE_USE');
+  const terms = await getTerms({ termsClassID: 'JOIN_SERVICE_USE' });
 
   return {
     props: {

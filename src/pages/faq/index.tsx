@@ -2,9 +2,9 @@ import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
-import { getFaqCategories } from '@/src/api/faq/getFaqCategories';
-import { getFaqs } from '@/src/api/faq/getFaqs';
-import { getTerms, Term } from '@/src/api/terms';
+import { getFaqCategories } from '@/src/utils/fetch/faq/getFaqCategories';
+import { getFaqs } from '@/src/utils/fetch/faq/getFaqs';
+import { getTerms, Term } from '@/src/utils/fetch/terms';
 import Footer from '@/src/components/Footer/Footer';
 import Header from '@/src/components/Header';
 import Layout from '@/src/components/Layout/Layout';
@@ -53,8 +53,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const initialQuestionQuery = String(query?.question || '');
 
   const [categories, terms, faqData] = await Promise.all([
-    getFaqCategories(initialTab),
-    getTerms('JOIN_SERVICE_USE'),
+    getFaqCategories({ tab: initialTab }),
+    getTerms({ termsClassID: 'JOIN_SERVICE_USE' }),
     getFaqs({
       tab: initialTab,
       ...(categoryID && { categoryID }),

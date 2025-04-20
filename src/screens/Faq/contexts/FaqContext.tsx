@@ -1,4 +1,4 @@
-import type { FaqListResponse } from '@/src/api/faq/schema';
+import type { FaqListResponse } from '@/src/utils/fetch/faq/schema';
 
 import {
   createContext,

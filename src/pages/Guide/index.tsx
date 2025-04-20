@@ -1,15 +1,15 @@
 import Head from 'next/head';
 
-import { getTerms } from '@/src/api/terms';
 import Footer from '@/src/components/Footer/Footer';
 import Header from '@/src/components/Header';
 import Layout from '@/src/components/Layout/Layout';
 import { META } from '@/src/constants/meta';
 import GuideScreen from '@/src/screens/Guide/GuideScreen';
+import { getTerms } from '@/src/utils/fetch/terms';
 
 import type { GetServerSideProps } from 'next';
 import type { NextPageWithLayout } from '@/src/components/Layout/types';
-import type { Term } from '@/src/api/terms';
+import type { Term } from '@/src/utils/fetch/terms';
 
 interface Props {
   terms: Term[];
@@ -41,7 +41,7 @@ GuidePage.getLayout = (page) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const terms = await getTerms('JOIN_SERVICE_USE');
+  const terms = await getTerms({ termsClassID: 'JOIN_SERVICE_USE' });
 
   return {
     props: {

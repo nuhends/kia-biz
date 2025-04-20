@@ -6,7 +6,7 @@ import { useFaqContext } from './contexts/FaqContext';
 
 import type { FC } from 'react';
 import type { LinkProps } from 'next/link';
-import type { TabType } from '@/src/api/faq';
+import type { TabType } from '@/src/utils/fetch/faq';
 
 export const FAQ_TAB_LIST = [
   {
