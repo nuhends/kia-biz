@@ -9,13 +9,12 @@ import type { AxiosError, AxiosRequestConfig } from 'axios';
  * @returns API 기본 URL
  */
 export const getApiBaseUrl = (): string => {
-  // 서버 사이드에서 API를 호출할 때는 절대 URL이 필요합니다.
-  console.log('typeof window :: ', typeof window);
+  // 서버 사이드에서 API를 호출할 때는 절대 URL이 필요
   if (typeof window === 'undefined') {
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
   }
 
-  // 클라이언트 사이드에서는 상대 경로를 사용합니다.
+  // 클라이언트 사이드에서는 상대 경로를 사용(Nextjs API 사용하기 때문)
   return '';
 };
 
