@@ -2,7 +2,7 @@ import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path';
 
-import { FaqCategoriesResponse, TabTypeSchema } from '@/src/api/faq/schema';
+import { FaqCategoriesResponse, TabTypeSchema } from '@/src/utils/fetch/faq/schema';
 
 // db.json 파일에서 FAQ 카테고리 데이터 가져오기
 const dbPath = path.join(process.cwd(), 'db.json');

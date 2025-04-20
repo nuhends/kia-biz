@@ -1,4 +1,4 @@
-import type { FaqCategory } from '@/src/api/faq/schema';
+import type { FaqCategory } from '@/src/utils/fetch/faq/schema';
 import type { ComponentProps, FC } from 'react';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';

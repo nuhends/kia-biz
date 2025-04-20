@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { getApiUrl } from '@/src/utils/api';
+import { getApiUrl } from '@/src/utils/apiHelper';
 
 import { Term, TermSchema, TermsClassID, TermsClassIDSchema } from './schema';
 

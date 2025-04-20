@@ -11,8 +11,8 @@ import FilterList from './FilterList';
 import InquiryInfoSection from './InquiryInfoSection';
 
 import type { FC } from 'react';
-import type { FaqListResponse } from '@/src/api/faq';
-import type { FaqCategory } from '@/src/api/faq/schema';
+import type { FaqListResponse } from '@/src/utils/fetch/faq';
+import type { FaqCategory } from '@/src/utils/fetch/faq/schema';
 
 export interface FaqScreenProps {
   categories: FaqCategory[];

@@ -1,7 +1,7 @@
 import type { NextPageContext } from 'next';
 import { match } from 'ts-pattern';
 
-import { getTerms } from '@/src/api/terms';
+import { getTerms } from '@/src/utils/fetch/terms';
 import Footer from '@/src/components/Footer/Footer';
 import Header from '@/src/components/Header';
 import Layout from '@/src/components/Layout/Layout';
@@ -11,7 +11,7 @@ import Content500 from '@/src/screens/Error/Content500';
 import ErrorScreen from '@/src/screens/Error/ErrorScreen';
 
 import type { ErrorProps } from '@/src/utils/error';
-import type { Term } from '@/src/api/terms/schema';
+import type { Term } from '@/src/utils/fetch/terms/schema';
 import type { NextPageWithLayout } from '@/src/components/Layout/types';
 import type { ErrorScreenProps } from '@/src/screens/Error/ErrorScreen';
 

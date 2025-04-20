@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { FaqCategoriesResponseSchema, FaqCategory, TabType } from './schema';
-import { getApiUrl } from '@/src/utils/api';
+import { getApiUrl } from '@/src/utils/apiHelper';
 
 /**
  * 탭별 카테고리 목록 조회

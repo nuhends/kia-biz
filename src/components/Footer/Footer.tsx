@@ -9,7 +9,7 @@ import TermsModal from '@/src/screens/Faq/TermsModal';
 import Address from './Address';
 
 import type { FC } from 'react';
-import type { Term } from '@/src/api/terms';
+import type { Term } from '@/src/utils/fetch/terms';
 
 interface Props {
   terms: Term[];

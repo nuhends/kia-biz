@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
-import { getFaqs } from '@/src/api/faq/getFaqs';
+import { getFaqs } from '@/src/utils/fetch/faq/getFaqs';
 import { useNetworkError } from '@/src/context/NetworkErrorContext';
 
 import { useFaqContext } from './contexts/FaqContext';

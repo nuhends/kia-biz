@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getApiBaseUrl, getApiUrl } from './api';
+import { getApiBaseUrl, getApiUrl } from './apiHelper';
 
 describe('getApiBaseUrl', () => {
   const originalWindow = global.window;
